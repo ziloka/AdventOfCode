@@ -1,16 +1,16 @@
 function getInput(){
-    return `..##.......
-            #...#...#..
-            .#....#..#.
-            ..#.#...#.#
-            .#...##..#.
-            ..#.##.....
-            .#.#.#....#
-            .#........#
-            #.##...#...
-            #...##....#
-            .#..#...#.#`;
-    // return require('fs').readFileSync('./input.txt', 'utf8');
+    // return `..##.......
+    //         #...#...#..
+    //         .#....#..#.
+    //         ..#.#...#.#
+    //         .#...##..#.
+    //         ..#.##.....
+    //         .#.#.#....#
+    //         .#........#
+    //         #.##...#...
+    //         #...##....#
+    //         .#..#...#.#`;
+    return require('fs').readFileSync('./input.txt', 'utf8');
 }
 
 function part1(arr){
@@ -54,7 +54,7 @@ function part2(arr){
     for(let slope of slopes){
         let slopeResult = 0;
         let previousXValue = 0; // starting x point
-        for(let i=1;i<arr.length;i=i+slope.d){ // on each iteration the y position gets shifted by 1
+        for(let i=slope.d;i<arr.length;i=i+slope.d){ // on each iteration the y position gets shifted by 1
             let str = arr[i];
             previousXValue = previousXValue + slope.r;// the x position to check
             if(previousXValue >= str.length){ // check if we are unable to access character at scified position
