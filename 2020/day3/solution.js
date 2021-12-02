@@ -1,20 +1,21 @@
 function getInput(){
-    return `..##.......
-            #...#...#..
-            .#....#..#.
-            ..#.#...#.#
-            .#...##..#.
-            ..#.##.....
-            .#.#.#....#
-            .#........#
-            #.##...#...
-            #...##....#
-            .#..#...#.#`;
-    // return require('fs').readFileSync('./input.txt', 'utf8');
+    // return `..##.......
+    //         #...#...#..
+    //         .#....#..#.
+    //         ..#.#...#.#
+    //         .#...##..#.
+    //         ..#.##.....
+    //         .#.#.#....#
+    //         .#........#
+    //         #.##...#...
+    //         #...##....#
+    //         .#..#...#.#`;
+    return require('fs').readFileSync('./input.txt', 'utf8');
 }
 
 function part1(arr){
     let result = 0;
+    let debug = 0;
     let previousXValue = 0; // starting x point
     for(let i=1;i<arr.length;i++){ // on each iteration the y position gets shifted by 1
         let str = arr[i];
@@ -26,7 +27,12 @@ function part1(arr){
                 temp = temp + str;
             }
             str = temp;
+
+            if(str.charAt(previousXValue) == ''){
+                console.log(`check line ${i} char pos ${previousXValue} str length ${str.length}`);
+            }
         }
+
         // access string
         if(str.charAt(previousXValue) == "#"){ // if at specific position was a tree, # is a tree
             result++;
