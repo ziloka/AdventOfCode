@@ -63,9 +63,6 @@ function part2(arr){
       oxygenGeneratorRating = oxygenGeneratorRating.filter((s) => s.charAt(i) == (numOf1 >= numOf0 ? "1" : "0"));
     }
     oxygenGeneratorRating = parseInt(oxygenGeneratorRating[0], 2);
-
-    console.log(`Oxygen Generator Rating: ${oxygenGeneratorRating}`);
-    console.log(`Co2 Rating: ${co2Rating}`);
     return co2Rating * oxygenGeneratorRating; // the life support rating
 }
 
@@ -74,49 +71,3 @@ console.time();
 console.log(`part 1: ${part1(arr)}`);
 console.log(`part 2: ${part2(arr)}`);
 console.timeEnd();
-
-// function getInput(){
-//     return `00100
-//             11110
-//             10110
-//             10111
-//             10101
-//             01111
-//             00111
-//             11100
-//             10000
-//             11001
-//             00010
-//             01010`;
-//     // return require('fs').readFileSync('./input.txt', 'utf8');
-// }
-
-// function part1(arr){
-//     let resultArr = [];
-//     let gammaRay = "";
-//     // build binary strings
-//     for(let i=0;i<arr[0].length;i++){ // for each string
-//         let numOf1 = 0;
-//         let numOf0 = 0;
-//         for(let string of arr){
-//             if(string.charAt(i) == "1") numOf1++;
-//             else numOf0++;
-//         }
-//         if(numOf1 > numOf0) gammaRay = gammaRay + numOf1;
-//         else gammaRay = gammaRay + numOf0;
-//     }
-//     console.log(resultArr);
-//     // return result;
-// }
-
-// function part2(arr){
-   
-// }
-
-// const input = getInput();
-// const arr = input.split("\n").map((s) => s.trim()); /// split, and trim space
-// console.time();
-
-// console.log(`part 1: ${part1(arr)}`);
-// console.log(`part 2: ${part2(arr)}`);
-// console.timeEnd();
