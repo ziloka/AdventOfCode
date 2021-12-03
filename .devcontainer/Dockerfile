@@ -10,7 +10,10 @@ RUN apk add sudo && \
   echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME && \
   chmod 0440 /etc/sudoers.d/$USERNAME
 
+# Install dependencies
+RUN apk add binutils util-linux file
+
 # install nodejs-current for latest nodejs build
 # nodejs will install lts version
-RUN apk add --update nodejs npm python3 && \
+RUN apk add --update nodejs python3 && \
   alias python=python3
