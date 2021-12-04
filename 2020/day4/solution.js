@@ -1,17 +1,4 @@
 function getInput(){
-  // return `ecl:gry pid:860033327 eyr:2020 hcl:#fffffd
-  //         byr:1937 iyr:2017 cid:147 hgt:183cm
-
-  //         iyr:2013 ecl:amb cid:350 eyr:2023 pid:028048884
-  //         hcl:#cfa07d byr:1929
-
-  //         hcl:#ae17e1 iyr:2013
-  //         eyr:2024
-  //         ecl:brn pid:760753108 byr:1931
-  //         hgt:179cm
-
-  //         hcl:#cfa07d eyr:2025 pid:166559648
-  //         iyr:2011 ecl:brn hgt:59in`;
   return require('fs').readFileSync('./input.txt', 'utf8');
 }
 
@@ -36,31 +23,53 @@ function part1(arr){
       passport.eyr != undefined &&
       passport.hcl != undefined &&
       passport.hgt != undefined && 
-      passport.iyr != undefined
+      passport.iyr != undefined &&
+      passport.pid != undefined
     ){
       result++;
     }
   }
   return result;
-  // let result = 0;
-  // // cid is optional
-  // // let passportData = ['byr', 'cid', 'ecl', 'eyr', 'hcl', 'hgt', 'iyr', 'pid'];
-  // let passportData = ['byr', 'ecl', 'eyr', 'hcl', 'hgt', 'iyr', 'pid'];
-  // for(let passport of arr){
-  //   let properties = [];
-  //   for(let prop of passport.split(" ").filter((s) => s.length != 0)) properties.push(prop.split(":")[0].trim());
-  //   if(properties.every(p => passportData.includes(p))){
-  //     result++;
-  //   } else {
-  //     console.log(passport);
-  //     // console.log(properties.sort().filter((s) => s != "cid"));
-  //   }
-  // }
-  // return result;
 }
 
 function part2(arr){
- 
+  let result = [];
+  let validator = {
+    "byr": (str) => 1920 <= str && str <= 2002,
+    "iyr": (str) => 2010 <= str && str <= 2020,
+    "eyr": (str) => 2020 <= str && str <= 2030,
+    "hgt": (str) => {
+      let regex = /^\d+(cm|in)$/;
+      let valid = str.match(regex) ?? false;
+      let num = str.slice(0, -2)
+      if(!valid) return false;
+      return valid[1] == "in" ? 59 <= num && num <= 76 : 150 < num && num <= 193
+    },
+    "hcl": (str) => /^#[0-9a-f]{6}$/.test(str),
+    "ecl": (str) => /^(amb|blu|brn|gry|grn|hzl|oth)$/.test(str),
+    "pid": (str) => /^[0-9]{9}$/.test(str)
+  }
+  for(let passportStr of arr){
+    passportStr = passportStr.replace(/\n/g, " ");
+    let passport = convertPassport(passportStr);
+    let flag = true;
+    let keys = Object.keys(passport);
+    if(!Object.keys(validator).every((s) => keys.includes(s))) continue; // make sure all required keys are there, have not checked value yet
+    for(let key of keys){ // 
+      if(key == "cid") continue; // ignore cid property, it is optional
+      let value = passport[key];
+      if(validator[key] == undefined || validator[key](value) == false){
+        flag = false;
+        break;
+      }
+    }
+    if(flag == true){
+      // console.log(Object.keys(passport).sort().reduce((o, k) => {o[k] = passport[k]; return o;}, {}));
+      result.push(passport);
+    } 
+  }
+
+  return result.length;
 }
 
 const input = getInput();

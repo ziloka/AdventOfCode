@@ -11,9 +11,20 @@ RUN apk add sudo && \
   chmod 0440 /etc/sudoers.d/$USERNAME
 
 # Install dependencies
-RUN apk add binutils util-linux file
+RUN apk add curl wget git nano file binutils util-linux
 
 # install nodejs-current for latest nodejs build
 # nodejs will install lts version
 RUN apk add --update nodejs python3 && \
-  alias python=python3
+  cd /usr/bin && \
+  ln -s python3 python
+
+# Install other langauges
+RUN apk add openjdk11-jdk gcc g++ && \
+  # Install rust 
+  curl -sSf https://sh.rustup.rs | sh -s -- -y && \
+  source $HOME/.cargo/env
+
+# https://stackoverflow.com/questions/52056387/how-to-install-go-in-alpine-linux
+# https://stackoverflow.com/a/59485924
+COPY --from=golang:1.17-alpine /usr/local/go/ /usr/local/go/
