@@ -12,7 +12,7 @@
         "<node_internals>/**"
       ],
       "cwd": "${fileDirname}",
-      "program": "${workspaceFolder}/day1/solution.js"
+      "program": "${workspaceFolder}/2021/day4/solution.js"
     }
   ]
 }
