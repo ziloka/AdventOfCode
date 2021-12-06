@@ -77,10 +77,6 @@ function getWinner(callNumbers, boards, marks, callPos){
 function part1(arr) {
   let boardObj = getWinner(arr[0].split(","), arr.slice(1).map((s) => s.split(/\s+/gmi)), [], 0);
   return boardObj.board
-    .filter((_, i) => boardObj.marks
-      .map((v, i) => ({ index: i, value: v}))
-      .filter((e) => e.value == false)
-      .map((o) => o.index))
     .reduce((a, b) => (+a)+(+b)) * boardObj.callNumber;
 }
 
