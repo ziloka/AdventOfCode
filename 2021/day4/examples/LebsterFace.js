@@ -1,9 +1,10 @@
 // https://github.com/LebsterFace/AdventOfCode/tree/master/solutions/day4
+// only works in input.txt is using crlf eof sequence
 
 const input = require("fs")
 	.readFileSync("../input.txt", "utf-8")
 	.trim()
-	.split("\n\n");
+	.split(/\n\n|\r\n/);
 
 /** @type {number[]} */
 const numbers = input.splice(0, 2)[0].split(",").map(Number);
