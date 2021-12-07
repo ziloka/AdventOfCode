@@ -20,10 +20,18 @@ RUN apk add --update nodejs python3 && \
   ln -s python3 python
 
 # Install other langauges
-RUN apk add openjdk11-jdk gcc g++ && \
+RUN apk add openjdk11-jdk gcc g++
   # Install rust 
-  curl -sSf https://sh.rustup.rs | sh -s -- -y && \
-  source $HOME/.cargo/env
+  # curl -sSf https://sh.rustup.rs | sh -s -- -y && \
+  # source $HOME/.cargo/env && \
+  # Install dotnet
+  # apk add bash icu-libs krb5-libs libgcc libintl libssl1.1 libstdc++ zlib && \
+  # apk add libgdiplus --repository https://dl-cdn.alpinelinux.org/alpine/edge/testing && \
+  # mkdir -p /usr/share/dotnet && \
+  # ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet && \
+  # wget https://dot.net/v1/dotnet-install.sh && \
+  # chmod +x dotnet-install.sh && \
+  # ./dotnet-install.sh -c 6.0 --install-dir /usr/share/dotnet
 
 # https://stackoverflow.com/questions/52056387/how-to-install-go-in-alpine-linux
 # https://stackoverflow.com/a/59485924

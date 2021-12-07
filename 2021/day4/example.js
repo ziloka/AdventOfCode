@@ -67,7 +67,7 @@ function getWinner(callNumbers, boards, marks, callPos){
       return {
         index: boardWinnerIndex,
         board: board.filter((_, i) => markedBoard.includes(i)),
-        marks: marks[boardWinnerIndex],
+        marks: marks,
         callNumber
       };
     }
@@ -83,8 +83,10 @@ function part1(arr) {
 function part2(arr) {
   let boards = arr.slice(1).map((s) => s.split(/\s+/gmi));
   let lastWonBoard;
+  let marks = [];
   while(boards.length != 1){
-    let board = getWinner(arr[0].split(","), boards, [], 0);
+    let board = getWinner(arr[0].split(","), boards, marks, 0);
+    marks = board.marks;
     boards.splice(board.index, 1);
   }
   lastWonBoard = boards[0];

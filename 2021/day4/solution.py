@@ -5,7 +5,7 @@ import sys
 from typing import Any, TypeVar
 
 # Type annotation alias
-T = TypeVar('tuple[list[int], list[list[list[int]]]]')
+T = TypeVar('tuple[list[int], list[list[list[int]]]]') # type: ignore
 
 
 def intify(list_of_strings: list[str]) -> list[int]:
