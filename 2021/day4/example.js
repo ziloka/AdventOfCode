@@ -66,7 +66,8 @@ function getWinner(callNumbers, boards, marks, callPos){
         .map((o) => o.index);
       return {
         index: boardWinnerIndex,
-        board: board.filter((_, i) => markedBoard.includes(i)),
+        board: board,
+        sumOfUnmarked: board.filter((_, i) => markedBoard.includes(i)).reduce((a, b) => (+a)+(+b)),
         marks: marks,
         callNumber
       };
@@ -74,29 +75,29 @@ function getWinner(callNumbers, boards, marks, callPos){
     return getWinner(callNumbers, boards, marks, callPos + 1);
 }
 
-function part1(arr) {
-  let boardObj = getWinner(arr[0].split(","), arr.slice(1).map((s) => s.split(/\s+/gmi)), [], 0);
-  return boardObj.board
-    .reduce((a, b) => (+a)+(+b)) * boardObj.callNumber;
+function part1(boards, callNumbers) {
+  let boardObj = getWinner(callNumbers, boards, [], 0);
+  return boardObj.sumOfUnmarked * boardObj.callNumber;
 }
 
-function part2(arr) {
-  let boards = arr.slice(1).map((s) => s.split(/\s+/gmi));
+function part2(boards, callNumbers) {
   let lastWonBoard;
   let marks = [];
   while(boards.length != 1){
-    let board = getWinner(arr[0].split(","), boards, marks, 0);
+    let board = getWinner(callNumbers, boards, marks, 0);
     marks = board.marks;
     boards.splice(board.index, 1);
   }
   lastWonBoard = boards[0];
-  let wonBoard = getWinner(arr[0].split(","), [lastWonBoard], [], 0);
-  return wonBoard.board.reduce((a, b) => (+a)+(+b)) * wonBoard.callNumber;
+  let wonBoard = getWinner(callNumbers, [lastWonBoard], marks, 0);
+  return wonBoard.sumOfUnmarked * wonBoard.callNumber;
 }
 
 let arr = getInput().split("\n\n").map((s) => s.trim());
+let boards = arr.slice(1).map((s) => s.split(/\s+/gmi));
+let callNumbers = arr[0].split(",");
 
 console.time();
-console.log(`part 1: ${part1(arr)}`);
-console.log(`part 2: ${part2(arr)}`);
+console.log(`part 1: ${part1(boards, callNumbers)}`);
+console.log(`part 2: ${part2(boards, callNumbers)}`);
 console.timeEnd();
