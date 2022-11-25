@@ -11,7 +11,7 @@ for(let i=0;i<arr.length-1;i++){
 
   // part 2
   let sum = arr.slice(i+1, i+4).reduce((a, b) => a+b);
-  if(!isNaN(sum) && part2PreviousValue < sum){
+  if(!isNaN(sum) && part2PreviousValue < sum) {
     part2++;
   }
   part2PreviousValue = sum;

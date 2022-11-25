@@ -7,11 +7,11 @@ function getInput() {
 
 function part1(arr) {
   let result = 0; // how many valid passwords there are
-  for (let [ passwordPolicy, password ] of arr.map((s) => s.split(":"))) {
+  for (let [ passwordPolicy, passwd ] of arr.map((s) => s.split(":"))) {
     let [ range, char ] = passwordPolicy.split(" ");
     let [ min, max ] = range.split("-");
     let increment = 0;
-    for (let passwdChar of password) if (passwdChar == char) increment++;
+    for (let passwdChar of passwd) if (passwdChar == char) increment++;
     if (min <= increment && increment <= max) result++;
   }
   return result;
