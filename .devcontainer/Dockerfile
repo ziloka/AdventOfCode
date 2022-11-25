@@ -15,7 +15,7 @@ RUN apk add curl wget git nano file binutils util-linux
 
 # install nodejs-current for latest nodejs build
 # nodejs will install lts version
-RUN apk add --update nodejs python3 && \
+RUN apk add --update nodejs npm python3 && \
   cd /usr/bin && \
   ln -s python3 python
 
