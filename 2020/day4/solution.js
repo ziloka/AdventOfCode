@@ -31,7 +31,6 @@ const validate = (func) => passports
 
 console.time();
 
-console.log(`Number of passports: ${passports.length}`);
 console.log(`part 1: ${validate(() => true)}`);
 console.log(`part 2: ${validate((passport, key) => validator[key](passport[key]))}`);
 console.timeEnd();

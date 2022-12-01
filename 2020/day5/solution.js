@@ -4,31 +4,17 @@ const getInput = () => require('fs').readFileSync('./input.txt', 'utf8');
 const boardingPasses = getInput().split("\n").map((code) => +getSeatId(code)).sort((a, b) => a - b);
 
 function getSeatId(code) {
-  // determine what row you sit in
-  let rows = Array.from(Array(127 + 1).keys()); // keep the number even
-  for (let gravity of code.slice(0, 7)) { // F or B
-    if (gravity == "F") {
-      // keep the lower half
-      rows = rows.slice(0, rows.length/2);
-    } else if(gravity == "B") {
-      // keep the upper half
-      rows = rows.slice(rowNums.length/2);
+  const binarySpaceParition = (str, range, { lower, upper }) => {
+    let rows = Array.from(Array(range + 1).keys());
+    for (let s of str) {
+      if (s == lower) rows = rows.slice(0, rows.length/2); // keep lower half
+      else if (s == upper) rows = rows.slice(rows.length/2); // keep upper half
     }
+    return rows[0];
   }
-
-  // determine what column you sit in
-  let columns = Array.from(Array(7 + 1).keys()); // keep the number even
-  for (let shift of code.slice(7)) { // L or R
-    if (shift == "L") {
-      // keep lower half
-      columns = columns.slice(0, columns.length/2);
-    } else if(shift == "R") {
-      // keep the upper half
-      columns = columns.slice(columns.length/2);
-    }
-  }
-
-  return  rowNums[0] * 8 + columns[0];
+  const row = binarySpaceParition(code.slice(0, 7), 127, { lower: "F", upper: "B" });
+  const column = binarySpaceParition(code.slice(7), 7, { lower: "L", upper: "R" });
+  return  row * 8 + column;
 }
 
 console.time();
