@@ -1,54 +1,48 @@
-let [boxes, ...moves] = require('fs').readFileSync('input.txt', 'utf8').split('move');
+const input = require('fs').readFileSync('input.txt', 'utf8');
 
-// example input
-// boxes = [
-//   ["N", "Z"],
-//   ["D", "C", "M"],
-//   ["P"]
-// ];
+const parseInput = (rawInput) => {
+  let crateRows = rawInput.split("\n\n")[0].split('\n')
+  let numStacks = (crateRows[0].length + 1) / 4;
+  let stacks = new Array(numStacks + 1).fill().map(() => []);
 
-// real input
-boxes = [
-  ['T', 'V', 'J', 'W', 'N', 'R', 'M', 'S'], // 1
-  ['V', 'C', 'P', 'Q', 'J', 'D', 'W', 'B'], // 2
-  ['P', 'R', 'D', 'H', 'F', 'J', 'B'], // 3
-  ['D', 'N', 'M', 'B', 'P', 'R', 'F'], // 4
-  ['B', 'T', 'P', 'R', 'V', 'H'], // 5
-  ['T', 'P', 'B', 'C'], // 6
-  ['L', 'P', 'R', 'J', 'B'], // 7
-  ['W', 'B', 'Z', 'T', 'L', 'S', 'C', 'N'], // 8
-  ['G', 'S', 'L'], // 9
-];
+  for (let row of rawInput.split("\n\n")[0].split('\n')) {
+    if (row[1] === '1') break;
 
-moves = moves.map((s) => {
-  const [numOfBoxes, from, to] = s.match(/\d+/g).map((d) => +d);
-  return {
-    boxes: numOfBoxes,
-    from,
-    to,
-  };
-});
-
-function part1(boxes) {
-  for (const move of moves) {
-    for (let i = 0; i < move.boxes; i += 1) { // move each box one by one
-      boxes[move.to - 1].splice(0, 0, boxes[move.from - 1][0]); // append the value at the beginning of the array
-      boxes[move.from - 1].splice(0, 1); // delete previous value
+    for (let i = 0; i < numStacks; i++) {
+      let crate = row[4 * i + 1];
+      if (crate !== ' ') {
+        stacks[i + 1].push(crate);
+      }
     }
   }
-  return boxes.reduce((previousValue, currentValue) => previousValue + currentValue.find((e) => e != null), '');
+
+  let instructions = rawInput.split("\n\n")[1].split('\n').map(line => {
+    let [ amount, from, to ] = line.match(/\d+/g).map((d) => +d);
+    return { amount, from, to };
+  });
+
+  return { instructions, stacks };
 }
 
-function part2(boxes) {
-  for (const move of moves) {
-    boxes[move.to - 1].splice(0, 0, ...boxes[move.from - 1].slice(0, move.boxes)); // append the values at the beginning of the array
-    boxes[move.from - 1].splice(0, move.boxes);
-  }
-  return boxes.reduce((previousValue, currentValue) => previousValue + currentValue.find((e) => e != null), '');
+function part1(stacks, instructions) {
+  instructions.forEach((instruction) => {
+    Array.from({ length: instruction.amount }, () => {
+      stacks[instruction.to].unshift(stacks[instruction.from].shift());
+    });
+  });
+  return stacks.filter((s) => s.length > 0).reduce((a, b) => a + b[0], "");
+}
+
+function part2(stacks, instructions) {
+  instructions.forEach((instruction) => {
+    stacks[instruction.to].unshift(...stacks[instruction.from].splice(0, instruction.amount));
+  });
+  return stacks.filter((s) => s.length > 0).reduce((a, b) => a + b[0], "");
 }
 
 // DEEP CLONE VALUES (structuredClone method or JSON.parse(JSON.stringify(data))) because arrays are passed by reference *
+const { stacks, instructions } = parseInput(input);
 console.time();
-console.log(`part 1: ${part1(structuredClone(boxes))}`);
-console.log(`part 2: ${part2(structuredClone(boxes))}`);
+console.log(`part 1: ${part1(JSON.parse(JSON.stringify(stacks)), instructions)}`);
+console.log(`part 2: ${part2(JSON.parse(JSON.stringify(stacks)), instructions)}`);
 console.timeEnd();
