@@ -1,7 +1,7 @@
 const sections = require('fs').readFileSync("input.txt", "utf8").split("\n").map((s) => s.split(",").map((s2) => s2.split("-").map((d) => +d)));
 
 function getPairs(func) {
-  return sections.filter(([[min, max], [min2, max2]]) => func(Array.from(new Array(max - min + 1), (_, i) => i + min), Array.from(new Array(max2 - min2 + 1), (_, i) => i + min2))).length;
+  return sections.filter(([[min, max], [min2, max2]]) => func(Array.from({ length: max - min + 1  }, (_, i) => min + i), Array.from({ length: max2 - min2 + 1 }, (_, i) => i + min2))).length;
 }
 
 function part1() {
