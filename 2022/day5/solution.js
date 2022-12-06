@@ -2,7 +2,7 @@ const input = require('fs').readFileSync('input.txt', 'utf8');
 
 const parseInput = (rawInput) => {
   let crateRows = rawInput.split("\n\n")[0].split('\n')
-  let numStacks = (crateRows[0].length + 1) / 4;
+  let numStacks = Math.floor((crateRows[0].length + 1) / 4);
   let stacks = new Array(numStacks + 1).fill().map(() => []);
 
   for (let row of rawInput.split("\n\n")[0].split('\n')) {
@@ -16,9 +16,13 @@ const parseInput = (rawInput) => {
     }
   }
 
-  let instructions = rawInput.split("\n\n")[1].split('\n').map(line => {
-    let [ amount, from, to ] = line.match(/\d+/g).map((d) => +d);
-    return { amount, from, to };
+  let instructions = rawInput.split("\n\n")[1].split('\n').map((line, i) => {
+    if (line.split('from')[0].split('move ')[1] == undefined) console.log(crateRows.length + i, line);
+    return {
+      amount: parseInt(line.split('from')[0].split('move ')[1].trim(), 10),
+      from: parseInt(line.split('from')[1].split('to')[0].trim(), 10),
+      to: parseInt(line.split('from')[1].split('to')[1].trim(), 10),
+    }
   });
 
   return { instructions, stacks };
