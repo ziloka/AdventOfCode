@@ -12,7 +12,7 @@ function seenTrees(direction, tree) {
 }
 
 function solution(input) {
-  const forest = input.map(x => x.split('').map(t => parseInt(t)))
+  const forest = input.map(x => x.split('').map(t => parseInt(t)));
   const sideLength = forest.length; 
   const visMap = forest.map(_ => new Array(sideLength).fill(1)); // if visable --> 1
   const scenic_scores = [];

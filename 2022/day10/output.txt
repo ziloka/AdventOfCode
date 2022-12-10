@@ -1,0 +1,967 @@
+13480
+Start cycle   1: begin executing addx 2
+During cycle  1: CRT draws pixel in position 0
+Current CRT row: #
+
+During cycle  2: CRT draws pixel in position 1
+Current CRT row: ##
+Ended cycle 2: finished executing addx 2 (Register X is now 3))
+
+Start cycle   3: begin executing addx 4
+During cycle  3: CRT draws pixel in position 2
+Current CRT row: ###
+
+During cycle  4: CRT draws pixel in position 3
+Current CRT row: ####
+Ended cycle 4: finished executing addx 4 (Register X is now 7))
+
+Start cycle   5: begin executing noop 
+During cycle  5: CRT draws pixel in position 4
+Current CRT row: ####.
+
+Start cycle   6: begin executing noop 
+During cycle  6: CRT draws pixel in position 5
+Current CRT row: ####..
+
+Start cycle   7: begin executing addx 17
+During cycle  7: CRT draws pixel in position 6
+Current CRT row: ####..#
+
+During cycle  8: CRT draws pixel in position 7
+Current CRT row: ####..##
+Ended cycle 8: finished executing addx 17 (Register X is now 24))
+
+Start cycle   9: begin executing noop 
+During cycle  9: CRT draws pixel in position 8
+Current CRT row: ####..##.
+
+Start cycle   10: begin executing addx -11
+During cycle  10: CRT draws pixel in position 9
+Current CRT row: ####..##..
+
+During cycle  11: CRT draws pixel in position 10
+Current CRT row: ####..##...
+Ended cycle 11: finished executing addx -11 (Register X is now 13))
+
+Start cycle   12: begin executing addx -1
+During cycle  12: CRT draws pixel in position 11
+Current CRT row: ####..##....
+
+During cycle  13: CRT draws pixel in position 12
+Current CRT row: ####..##....#
+Ended cycle 13: finished executing addx -1 (Register X is now 12))
+
+Start cycle   14: begin executing addx 4
+During cycle  14: CRT draws pixel in position 13
+Current CRT row: ####..##....##
+
+During cycle  15: CRT draws pixel in position 14
+Current CRT row: ####..##....##.
+Ended cycle 15: finished executing addx 4 (Register X is now 16))
+
+Start cycle   16: begin executing noop 
+During cycle  16: CRT draws pixel in position 15
+Current CRT row: ####..##....##.#
+
+Start cycle   17: begin executing noop 
+During cycle  17: CRT draws pixel in position 16
+Current CRT row: ####..##....##.##
+
+Start cycle   18: begin executing addx 6
+During cycle  18: CRT draws pixel in position 17
+Current CRT row: ####..##....##.###
+
+During cycle  19: CRT draws pixel in position 18
+Current CRT row: ####..##....##.###.
+Ended cycle 19: finished executing addx 6 (Register X is now 22))
+
+Start cycle   20: begin executing noop 
+During cycle  20: CRT draws pixel in position 19
+Current CRT row: ####..##....##.###..
+
+Start cycle   21: begin executing noop 
+During cycle  21: CRT draws pixel in position 20
+Current CRT row: ####..##....##.###...
+
+Start cycle   22: begin executing addx -14
+During cycle  22: CRT draws pixel in position 21
+Current CRT row: ####..##....##.###...#
+
+During cycle  23: CRT draws pixel in position 22
+Current CRT row: ####..##....##.###...##
+Ended cycle 23: finished executing addx -14 (Register X is now 8))
+
+Start cycle   24: begin executing addx 19
+During cycle  24: CRT draws pixel in position 23
+Current CRT row: ####..##....##.###...##.
+
+During cycle  25: CRT draws pixel in position 24
+Current CRT row: ####..##....##.###...##..
+Ended cycle 25: finished executing addx 19 (Register X is now 27))
+
+Start cycle   26: begin executing noop 
+During cycle  26: CRT draws pixel in position 25
+Current CRT row: ####..##....##.###...##...
+
+Start cycle   27: begin executing addx 4
+During cycle  27: CRT draws pixel in position 26
+Current CRT row: ####..##....##.###...##...#
+
+During cycle  28: CRT draws pixel in position 27
+Current CRT row: ####..##....##.###...##...##
+Ended cycle 28: finished executing addx 4 (Register X is now 31))
+
+Start cycle   29: begin executing noop 
+During cycle  29: CRT draws pixel in position 28
+Current CRT row: ####..##....##.###...##...##.
+
+Start cycle   30: begin executing noop 
+During cycle  30: CRT draws pixel in position 29
+Current CRT row: ####..##....##.###...##...##..
+
+Start cycle   31: begin executing addx 1
+During cycle  31: CRT draws pixel in position 30
+Current CRT row: ####..##....##.###...##...##..#
+
+During cycle  32: CRT draws pixel in position 31
+Current CRT row: ####..##....##.###...##...##..##
+Ended cycle 32: finished executing addx 1 (Register X is now 32))
+
+Start cycle   33: begin executing addx 4
+During cycle  33: CRT draws pixel in position 32
+Current CRT row: ####..##....##.###...##...##..###
+
+During cycle  34: CRT draws pixel in position 33
+Current CRT row: ####..##....##.###...##...##..####
+Ended cycle 34: finished executing addx 4 (Register X is now 36))
+
+Start cycle   35: begin executing addx -20
+During cycle  35: CRT draws pixel in position 34
+Current CRT row: ####..##....##.###...##...##..####.
+
+During cycle  36: CRT draws pixel in position 35
+Current CRT row: ####..##....##.###...##...##..####.#
+Ended cycle 36: finished executing addx -20 (Register X is now 16))
+
+Start cycle   37: begin executing addx 21
+During cycle  37: CRT draws pixel in position 36
+Current CRT row: ####..##....##.###...##...##..####.#.
+
+During cycle  38: CRT draws pixel in position 37
+Current CRT row: ####..##....##.###...##...##..####.#..
+Ended cycle 38: finished executing addx 21 (Register X is now 37))
+
+Start cycle   39: begin executing addx -38
+During cycle  39: CRT draws pixel in position 38
+Current CRT row: ####..##....##.###...##...##..####.#..#
+
+During cycle  40: CRT draws pixel in position 39
+Current CRT row: ####..##....##.###...##...##..####.#..#.
+Ended cycle 40: finished executing addx -38 (Register X is now -1))
+
+Start cycle   41: begin executing noop 
+During cycle  41: CRT draws pixel in position 0
+Current CRT row: #
+
+Start cycle   42: begin executing addx 7
+During cycle  42: CRT draws pixel in position 1
+Current CRT row: #.
+
+During cycle  43: CRT draws pixel in position 2
+Current CRT row: #..
+Ended cycle 43: finished executing addx 7 (Register X is now 6))
+
+Start cycle   44: begin executing noop 
+During cycle  44: CRT draws pixel in position 3
+Current CRT row: #...
+
+Start cycle   45: begin executing addx 3
+During cycle  45: CRT draws pixel in position 4
+Current CRT row: #....
+
+During cycle  46: CRT draws pixel in position 5
+Current CRT row: #....#
+Ended cycle 46: finished executing addx 3 (Register X is now 9))
+
+Start cycle   47: begin executing noop 
+During cycle  47: CRT draws pixel in position 6
+Current CRT row: #....#.
+
+Start cycle   48: begin executing addx 22
+During cycle  48: CRT draws pixel in position 7
+Current CRT row: #....#..
+
+During cycle  49: CRT draws pixel in position 8
+Current CRT row: #....#..#
+Ended cycle 49: finished executing addx 22 (Register X is now 31))
+
+Start cycle   50: begin executing noop 
+During cycle  50: CRT draws pixel in position 9
+Current CRT row: #....#..#.
+
+Start cycle   51: begin executing addx -17
+During cycle  51: CRT draws pixel in position 10
+Current CRT row: #....#..#..
+
+During cycle  52: CRT draws pixel in position 11
+Current CRT row: #....#..#...
+Ended cycle 52: finished executing addx -17 (Register X is now 14))
+
+Start cycle   53: begin executing addx 2
+During cycle  53: CRT draws pixel in position 12
+Current CRT row: #....#..#....
+
+During cycle  54: CRT draws pixel in position 13
+Current CRT row: #....#..#....#
+Ended cycle 54: finished executing addx 2 (Register X is now 16))
+
+Start cycle   55: begin executing addx 3
+During cycle  55: CRT draws pixel in position 14
+Current CRT row: #....#..#....#.
+
+During cycle  56: CRT draws pixel in position 15
+Current CRT row: #....#..#....#.#
+Ended cycle 56: finished executing addx 3 (Register X is now 19))
+
+Start cycle   57: begin executing noop 
+During cycle  57: CRT draws pixel in position 16
+Current CRT row: #....#..#....#.#.
+
+Start cycle   58: begin executing addx 2
+During cycle  58: CRT draws pixel in position 17
+Current CRT row: #....#..#....#.#..
+
+During cycle  59: CRT draws pixel in position 18
+Current CRT row: #....#..#....#.#..#
+Ended cycle 59: finished executing addx 2 (Register X is now 21))
+
+Start cycle   60: begin executing addx 3
+During cycle  60: CRT draws pixel in position 19
+Current CRT row: #....#..#....#.#..#.
+
+During cycle  61: CRT draws pixel in position 20
+Current CRT row: #....#..#....#.#..#.#
+Ended cycle 61: finished executing addx 3 (Register X is now 24))
+
+Start cycle   62: begin executing noop 
+During cycle  62: CRT draws pixel in position 21
+Current CRT row: #....#..#....#.#..#.#.
+
+Start cycle   63: begin executing addx 2
+During cycle  63: CRT draws pixel in position 22
+Current CRT row: #....#..#....#.#..#.#..
+
+During cycle  64: CRT draws pixel in position 23
+Current CRT row: #....#..#....#.#..#.#..#
+Ended cycle 64: finished executing addx 2 (Register X is now 26))
+
+Start cycle   65: begin executing addx -8
+During cycle  65: CRT draws pixel in position 24
+Current CRT row: #....#..#....#.#..#.#..#.
+
+During cycle  66: CRT draws pixel in position 25
+Current CRT row: #....#..#....#.#..#.#..#.#
+Ended cycle 66: finished executing addx -8 (Register X is now 18))
+
+Start cycle   67: begin executing addx 9
+During cycle  67: CRT draws pixel in position 26
+Current CRT row: #....#..#....#.#..#.#..#.#.
+
+During cycle  68: CRT draws pixel in position 27
+Current CRT row: #....#..#....#.#..#.#..#.#..
+Ended cycle 68: finished executing addx 9 (Register X is now 27))
+
+Start cycle   69: begin executing addx 2
+During cycle  69: CRT draws pixel in position 28
+Current CRT row: #....#..#....#.#..#.#..#.#..#
+
+During cycle  70: CRT draws pixel in position 29
+Current CRT row: #....#..#....#.#..#.#..#.#..#.
+Ended cycle 70: finished executing addx 2 (Register X is now 29))
+
+Start cycle   71: begin executing noop 
+During cycle  71: CRT draws pixel in position 30
+Current CRT row: #....#..#....#.#..#.#..#.#..#.#
+
+Start cycle   72: begin executing noop 
+During cycle  72: CRT draws pixel in position 31
+Current CRT row: #....#..#....#.#..#.#..#.#..#.#.
+
+Start cycle   73: begin executing addx 7
+During cycle  73: CRT draws pixel in position 32
+Current CRT row: #....#..#....#.#..#.#..#.#..#.#..
+
+During cycle  74: CRT draws pixel in position 33
+Current CRT row: #....#..#....#.#..#.#..#.#..#.#...
+Ended cycle 74: finished executing addx 7 (Register X is now 36))
+
+Start cycle   75: begin executing addx 2
+During cycle  75: CRT draws pixel in position 34
+Current CRT row: #....#..#....#.#..#.#..#.#..#.#....
+
+During cycle  76: CRT draws pixel in position 35
+Current CRT row: #....#..#....#.#..#.#..#.#..#.#....#
+Ended cycle 76: finished executing addx 2 (Register X is now 38))
+
+Start cycle   77: begin executing addx -27
+During cycle  77: CRT draws pixel in position 36
+Current CRT row: #....#..#....#.#..#.#..#.#..#.#....#.
+
+During cycle  78: CRT draws pixel in position 37
+Current CRT row: #....#..#....#.#..#.#..#.#..#.#....#.#
+Ended cycle 78: finished executing addx -27 (Register X is now 11))
+
+Start cycle   79: begin executing addx -10
+During cycle  79: CRT draws pixel in position 38
+Current CRT row: #....#..#....#.#..#.#..#.#..#.#....#.#.
+
+During cycle  80: CRT draws pixel in position 39
+Current CRT row: #....#..#....#.#..#.#..#.#..#.#....#.#..
+Ended cycle 80: finished executing addx -10 (Register X is now 1))
+
+Start cycle   81: begin executing noop 
+During cycle  81: CRT draws pixel in position 0
+Current CRT row: #
+
+Start cycle   82: begin executing addx 37
+During cycle  82: CRT draws pixel in position 1
+Current CRT row: .#
+
+During cycle  83: CRT draws pixel in position 2
+Current CRT row: .##
+Ended cycle 83: finished executing addx 37 (Register X is now 38))
+
+Start cycle   84: begin executing addx -34
+During cycle  84: CRT draws pixel in position 3
+Current CRT row: .##.
+
+During cycle  85: CRT draws pixel in position 4
+Current CRT row: .##..
+Ended cycle 85: finished executing addx -34 (Register X is now 4))
+
+Start cycle   86: begin executing addx 30
+During cycle  86: CRT draws pixel in position 5
+Current CRT row: .##..#
+
+During cycle  87: CRT draws pixel in position 6
+Current CRT row: .##..#.
+Ended cycle 87: finished executing addx 30 (Register X is now 34))
+
+Start cycle   88: begin executing addx -29
+During cycle  88: CRT draws pixel in position 7
+Current CRT row: .##..#..
+
+During cycle  89: CRT draws pixel in position 8
+Current CRT row: .##..#...
+Ended cycle 89: finished executing addx -29 (Register X is now 5))
+
+Start cycle   90: begin executing addx 9
+During cycle  90: CRT draws pixel in position 9
+Current CRT row: .##..#....
+
+During cycle  91: CRT draws pixel in position 10
+Current CRT row: .##..#.....
+Ended cycle 91: finished executing addx 9 (Register X is now 14))
+
+Start cycle   92: begin executing noop 
+During cycle  92: CRT draws pixel in position 11
+Current CRT row: .##..#......
+
+Start cycle   93: begin executing addx 2
+During cycle  93: CRT draws pixel in position 12
+Current CRT row: .##..#.......
+
+During cycle  94: CRT draws pixel in position 13
+Current CRT row: .##..#.......#
+Ended cycle 94: finished executing addx 2 (Register X is now 16))
+
+Start cycle   95: begin executing noop 
+During cycle  95: CRT draws pixel in position 14
+Current CRT row: .##..#.......#.
+
+Start cycle   96: begin executing noop 
+During cycle  96: CRT draws pixel in position 15
+Current CRT row: .##..#.......#.#
+
+Start cycle   97: begin executing noop 
+During cycle  97: CRT draws pixel in position 16
+Current CRT row: .##..#.......#.##
+
+Start cycle   98: begin executing addx 5
+During cycle  98: CRT draws pixel in position 17
+Current CRT row: .##..#.......#.###
+
+During cycle  99: CRT draws pixel in position 18
+Current CRT row: .##..#.......#.###.
+Ended cycle 99: finished executing addx 5 (Register X is now 21))
+
+Start cycle   100: begin executing addx -4
+During cycle  100: CRT draws pixel in position 19
+Current CRT row: .##..#.......#.###..
+
+During cycle  101: CRT draws pixel in position 20
+Current CRT row: .##..#.......#.###..#
+Ended cycle 101: finished executing addx -4 (Register X is now 17))
+
+Start cycle   102: begin executing addx 9
+During cycle  102: CRT draws pixel in position 21
+Current CRT row: .##..#.......#.###..#.
+
+During cycle  103: CRT draws pixel in position 22
+Current CRT row: .##..#.......#.###..#..
+Ended cycle 103: finished executing addx 9 (Register X is now 26))
+
+Start cycle   104: begin executing addx -2
+During cycle  104: CRT draws pixel in position 23
+Current CRT row: .##..#.......#.###..#...
+
+During cycle  105: CRT draws pixel in position 24
+Current CRT row: .##..#.......#.###..#....
+Ended cycle 105: finished executing addx -2 (Register X is now 24))
+
+Start cycle   106: begin executing addx 7
+During cycle  106: CRT draws pixel in position 25
+Current CRT row: .##..#.......#.###..#....#
+
+During cycle  107: CRT draws pixel in position 26
+Current CRT row: .##..#.......#.###..#....#.
+Ended cycle 107: finished executing addx 7 (Register X is now 31))
+
+Start cycle   108: begin executing noop 
+During cycle  108: CRT draws pixel in position 27
+Current CRT row: .##..#.......#.###..#....#..
+
+Start cycle   109: begin executing noop 
+During cycle  109: CRT draws pixel in position 28
+Current CRT row: .##..#.......#.###..#....#...
+
+Start cycle   110: begin executing addx 1
+During cycle  110: CRT draws pixel in position 29
+Current CRT row: .##..#.......#.###..#....#....
+
+During cycle  111: CRT draws pixel in position 30
+Current CRT row: .##..#.......#.###..#....#....#
+Ended cycle 111: finished executing addx 1 (Register X is now 32))
+
+Start cycle   112: begin executing addx 4
+During cycle  112: CRT draws pixel in position 31
+Current CRT row: .##..#.......#.###..#....#....##
+
+During cycle  113: CRT draws pixel in position 32
+Current CRT row: .##..#.......#.###..#....#....###
+Ended cycle 113: finished executing addx 4 (Register X is now 36))
+
+Start cycle   114: begin executing addx -1
+During cycle  114: CRT draws pixel in position 33
+Current CRT row: .##..#.......#.###..#....#....###.
+
+During cycle  115: CRT draws pixel in position 34
+Current CRT row: .##..#.......#.###..#....#....###..
+Ended cycle 115: finished executing addx -1 (Register X is now 35))
+
+Start cycle   116: begin executing noop 
+During cycle  116: CRT draws pixel in position 35
+Current CRT row: .##..#.......#.###..#....#....###..#
+
+Start cycle   117: begin executing addx -19
+During cycle  117: CRT draws pixel in position 36
+Current CRT row: .##..#.......#.###..#....#....###..##
+
+During cycle  118: CRT draws pixel in position 37
+Current CRT row: .##..#.......#.###..#....#....###..##.
+Ended cycle 118: finished executing addx -19 (Register X is now 16))
+
+Start cycle   119: begin executing addx -17
+During cycle  119: CRT draws pixel in position 38
+Current CRT row: .##..#.......#.###..#....#....###..##..
+
+During cycle  120: CRT draws pixel in position 39
+Current CRT row: .##..#.......#.###..#....#....###..##...
+Ended cycle 120: finished executing addx -17 (Register X is now -1))
+
+Start cycle   121: begin executing noop 
+During cycle  121: CRT draws pixel in position 0
+Current CRT row: #
+
+Start cycle   122: begin executing addx 1
+During cycle  122: CRT draws pixel in position 1
+Current CRT row: #.
+
+During cycle  123: CRT draws pixel in position 2
+Current CRT row: ...
+Ended cycle 123: finished executing addx 1 (Register X is now 0))
+
+Start cycle   124: begin executing addx 4
+During cycle  124: CRT draws pixel in position 3
+Current CRT row: ....
+
+During cycle  125: CRT draws pixel in position 4
+Current CRT row: .....
+Ended cycle 125: finished executing addx 4 (Register X is now 4))
+
+Start cycle   126: begin executing addx 3
+During cycle  126: CRT draws pixel in position 5
+Current CRT row: .....#
+
+During cycle  127: CRT draws pixel in position 6
+Current CRT row: .....#.
+Ended cycle 127: finished executing addx 3 (Register X is now 7))
+
+Start cycle   128: begin executing addx 11
+During cycle  128: CRT draws pixel in position 7
+Current CRT row: .....#.#
+
+During cycle  129: CRT draws pixel in position 8
+Current CRT row: .....#.##
+Ended cycle 129: finished executing addx 11 (Register X is now 18))
+
+Start cycle   130: begin executing addx 17
+During cycle  130: CRT draws pixel in position 9
+Current CRT row: .....#.##.
+
+During cycle  131: CRT draws pixel in position 10
+Current CRT row: .....#.##..
+Ended cycle 131: finished executing addx 17 (Register X is now 35))
+
+Start cycle   132: begin executing addx -23
+During cycle  132: CRT draws pixel in position 11
+Current CRT row: .....#.##...
+
+During cycle  133: CRT draws pixel in position 12
+Current CRT row: .....#.##....
+Ended cycle 133: finished executing addx -23 (Register X is now 12))
+
+Start cycle   134: begin executing addx 2
+During cycle  134: CRT draws pixel in position 13
+Current CRT row: .....#.##....#
+
+During cycle  135: CRT draws pixel in position 14
+Current CRT row: .....#.##....#.
+Ended cycle 135: finished executing addx 2 (Register X is now 14))
+
+Start cycle   136: begin executing noop 
+During cycle  136: CRT draws pixel in position 15
+Current CRT row: .....#.##....#.#
+
+Start cycle   137: begin executing addx 3
+During cycle  137: CRT draws pixel in position 16
+Current CRT row: .....#.##....#.#.
+
+During cycle  138: CRT draws pixel in position 17
+Current CRT row: .....#.##....#.#..
+Ended cycle 138: finished executing addx 3 (Register X is now 17))
+
+Start cycle   139: begin executing addx 2
+During cycle  139: CRT draws pixel in position 18
+Current CRT row: .....#.##....#.#..#
+
+During cycle  140: CRT draws pixel in position 19
+Current CRT row: .....#.##....#.#..#.
+Ended cycle 140: finished executing addx 2 (Register X is now 19))
+
+Start cycle   141: begin executing addx 3
+During cycle  141: CRT draws pixel in position 20
+Current CRT row: .....#.##....#.#..#.#
+
+During cycle  142: CRT draws pixel in position 21
+Current CRT row: .....#.##....#.#..#.#.
+Ended cycle 142: finished executing addx 3 (Register X is now 22))
+
+Start cycle   143: begin executing addx 4
+During cycle  143: CRT draws pixel in position 22
+Current CRT row: .....#.##....#.#..#.#.#
+
+During cycle  144: CRT draws pixel in position 23
+Current CRT row: .....#.##....#.#..#.#.##
+Ended cycle 144: finished executing addx 4 (Register X is now 26))
+
+Start cycle   145: begin executing addx -22
+During cycle  145: CRT draws pixel in position 24
+Current CRT row: .....#.##....#.#..#.#.##.
+
+During cycle  146: CRT draws pixel in position 25
+Current CRT row: .....#.##....#.#..#.#.##.#
+Ended cycle 146: finished executing addx -22 (Register X is now 4))
+
+Start cycle   147: begin executing noop 
+During cycle  147: CRT draws pixel in position 26
+Current CRT row: .....#.##....#.#..#.#.##.#.
+
+Start cycle   148: begin executing addx 27
+During cycle  148: CRT draws pixel in position 27
+Current CRT row: .....#.##....#.#..#.#.##.#..
+
+During cycle  149: CRT draws pixel in position 28
+Current CRT row: .....#.##....#.#..#.#.##.#...
+Ended cycle 149: finished executing addx 27 (Register X is now 31))
+
+Start cycle   150: begin executing addx -32
+During cycle  150: CRT draws pixel in position 29
+Current CRT row: .....#.##....#.#..#.#.##.#....
+
+During cycle  151: CRT draws pixel in position 30
+Current CRT row: .....#.##....#.#..#.#.##.#....#
+Ended cycle 151: finished executing addx -32 (Register X is now -1))
+
+Start cycle   152: begin executing addx 14
+During cycle  152: CRT draws pixel in position 31
+Current CRT row: .....#.##....#.#..#.#.##.#....#.
+
+During cycle  153: CRT draws pixel in position 32
+Current CRT row: .....#.##....#.#..#.#.##.#....#..
+Ended cycle 153: finished executing addx 14 (Register X is now 13))
+
+Start cycle   154: begin executing addx 21
+During cycle  154: CRT draws pixel in position 33
+Current CRT row: .....#.##....#.#..#.#.##.#....#...
+
+During cycle  155: CRT draws pixel in position 34
+Current CRT row: .....#.##....#.#..#.#.##.#....#....
+Ended cycle 155: finished executing addx 21 (Register X is now 34))
+
+Start cycle   156: begin executing addx 2
+During cycle  156: CRT draws pixel in position 35
+Current CRT row: .....#.##....#.#..#.#.##.#....#....#
+
+During cycle  157: CRT draws pixel in position 36
+Current CRT row: .....#.##....#.#..#.#.##.#....#....#.
+Ended cycle 157: finished executing addx 2 (Register X is now 36))
+
+Start cycle   158: begin executing noop 
+During cycle  158: CRT draws pixel in position 37
+Current CRT row: .....#.##....#.#..#.#.##.#....#....#.#
+
+Start cycle   159: begin executing addx -37
+During cycle  159: CRT draws pixel in position 38
+Current CRT row: .....#.##....#.#..#.#.##.#....#....#.#.
+
+During cycle  160: CRT draws pixel in position 39
+Current CRT row: .....#.##....#.#..#.#.##.#....#....#.#..
+Ended cycle 160: finished executing addx -37 (Register X is now -1))
+
+Start cycle   161: begin executing noop 
+During cycle  161: CRT draws pixel in position 0
+Current CRT row: #
+
+Start cycle   162: begin executing addx 31
+During cycle  162: CRT draws pixel in position 1
+Current CRT row: #.
+
+During cycle  163: CRT draws pixel in position 2
+Current CRT row: #..
+Ended cycle 163: finished executing addx 31 (Register X is now 30))
+
+Start cycle   164: begin executing addx -26
+During cycle  164: CRT draws pixel in position 3
+Current CRT row: ....
+
+During cycle  165: CRT draws pixel in position 4
+Current CRT row: .....
+Ended cycle 165: finished executing addx -26 (Register X is now 4))
+
+Start cycle   166: begin executing addx 5
+During cycle  166: CRT draws pixel in position 5
+Current CRT row: .....#
+
+During cycle  167: CRT draws pixel in position 6
+Current CRT row: .....#.
+Ended cycle 167: finished executing addx 5 (Register X is now 9))
+
+Start cycle   168: begin executing addx 2
+During cycle  168: CRT draws pixel in position 7
+Current CRT row: .....#..
+
+During cycle  169: CRT draws pixel in position 8
+Current CRT row: .....#..#
+Ended cycle 169: finished executing addx 2 (Register X is now 11))
+
+Start cycle   170: begin executing addx 3
+During cycle  170: CRT draws pixel in position 9
+Current CRT row: .....#..#.
+
+During cycle  171: CRT draws pixel in position 10
+Current CRT row: .....#..#.#
+Ended cycle 171: finished executing addx 3 (Register X is now 14))
+
+Start cycle   172: begin executing addx -2
+During cycle  172: CRT draws pixel in position 11
+Current CRT row: .....#..#.#.
+
+During cycle  173: CRT draws pixel in position 12
+Current CRT row: .....#..#.#..
+Ended cycle 173: finished executing addx -2 (Register X is now 12))
+
+Start cycle   174: begin executing addx 2
+During cycle  174: CRT draws pixel in position 13
+Current CRT row: .....#..#.#..#
+
+During cycle  175: CRT draws pixel in position 14
+Current CRT row: .....#..#.#..#.
+Ended cycle 175: finished executing addx 2 (Register X is now 14))
+
+Start cycle   176: begin executing addx 5
+During cycle  176: CRT draws pixel in position 15
+Current CRT row: .....#..#.#..#.#
+
+During cycle  177: CRT draws pixel in position 16
+Current CRT row: .....#..#.#..#.#.
+Ended cycle 177: finished executing addx 5 (Register X is now 19))
+
+Start cycle   178: begin executing addx 2
+During cycle  178: CRT draws pixel in position 17
+Current CRT row: .....#..#.#..#.#..
+
+During cycle  179: CRT draws pixel in position 18
+Current CRT row: .....#..#.#..#.#..#
+Ended cycle 179: finished executing addx 2 (Register X is now 21))
+
+Start cycle   180: begin executing addx 3
+During cycle  180: CRT draws pixel in position 19
+Current CRT row: .....#..#.#..#.#..#.
+
+During cycle  181: CRT draws pixel in position 20
+Current CRT row: .....#..#.#..#.#..#.#
+Ended cycle 181: finished executing addx 3 (Register X is now 24))
+
+Start cycle   182: begin executing noop 
+During cycle  182: CRT draws pixel in position 21
+Current CRT row: .....#..#.#..#.#..#.#.
+
+Start cycle   183: begin executing addx 2
+During cycle  183: CRT draws pixel in position 22
+Current CRT row: .....#..#.#..#.#..#.#..
+
+During cycle  184: CRT draws pixel in position 23
+Current CRT row: .....#..#.#..#.#..#.#..#
+Ended cycle 184: finished executing addx 2 (Register X is now 26))
+
+Start cycle   185: begin executing addx 9
+During cycle  185: CRT draws pixel in position 24
+Current CRT row: .....#..#.#..#.#..#.#..#.
+
+During cycle  186: CRT draws pixel in position 25
+Current CRT row: .....#..#.#..#.#..#.#..#.#
+Ended cycle 186: finished executing addx 9 (Register X is now 35))
+
+Start cycle   187: begin executing addx -8
+During cycle  187: CRT draws pixel in position 26
+Current CRT row: .....#..#.#..#.#..#.#..#.#.
+
+During cycle  188: CRT draws pixel in position 27
+Current CRT row: .....#..#.#..#.#..#.#..#.#..
+Ended cycle 188: finished executing addx -8 (Register X is now 27))
+
+Start cycle   189: begin executing addx 2
+During cycle  189: CRT draws pixel in position 28
+Current CRT row: .....#..#.#..#.#..#.#..#.#..#
+
+During cycle  190: CRT draws pixel in position 29
+Current CRT row: .....#..#.#..#.#..#.#..#.#..#.
+Ended cycle 190: finished executing addx 2 (Register X is now 29))
+
+Start cycle   191: begin executing addx 11
+During cycle  191: CRT draws pixel in position 30
+Current CRT row: .....#..#.#..#.#..#.#..#.#..#.#
+
+During cycle  192: CRT draws pixel in position 31
+Current CRT row: .....#..#.#..#.#..#.#..#.#..#.#.
+Ended cycle 192: finished executing addx 11 (Register X is now 40))
+
+Start cycle   193: begin executing addx -4
+During cycle  193: CRT draws pixel in position 32
+Current CRT row: .....#..#.#..#.#..#.#..#.#..#.#..
+
+During cycle  194: CRT draws pixel in position 33
+Current CRT row: .....#..#.#..#.#..#.#..#.#..#.#...
+Ended cycle 194: finished executing addx -4 (Register X is now 36))
+
+Start cycle   195: begin executing addx 2
+During cycle  195: CRT draws pixel in position 34
+Current CRT row: .....#..#.#..#.#..#.#..#.#..#.#....
+
+During cycle  196: CRT draws pixel in position 35
+Current CRT row: .....#..#.#..#.#..#.#..#.#..#.#....#
+Ended cycle 196: finished executing addx 2 (Register X is now 38))
+
+Start cycle   197: begin executing addx -15
+During cycle  197: CRT draws pixel in position 36
+Current CRT row: .....#..#.#..#.#..#.#..#.#..#.#....#.
+
+During cycle  198: CRT draws pixel in position 37
+Current CRT row: .....#..#.#..#.#..#.#..#.#..#.#....#.#
+Ended cycle 198: finished executing addx -15 (Register X is now 23))
+
+Start cycle   199: begin executing addx -22
+During cycle  199: CRT draws pixel in position 38
+Current CRT row: .....#..#.#..#.#..#.#..#.#..#.#....#.#.
+
+During cycle  200: CRT draws pixel in position 39
+Current CRT row: .....#..#.#..#.#..#.#..#.#..#.#....#.#..
+Ended cycle 200: finished executing addx -22 (Register X is now 1))
+
+Start cycle   201: begin executing addx 1
+During cycle  201: CRT draws pixel in position 0
+Current CRT row: #
+
+During cycle  202: CRT draws pixel in position 1
+Current CRT row: ##
+Ended cycle 202: finished executing addx 1 (Register X is now 2))
+
+Start cycle   203: begin executing addx 5
+During cycle  203: CRT draws pixel in position 2
+Current CRT row: ###
+
+During cycle  204: CRT draws pixel in position 3
+Current CRT row: ####
+Ended cycle 204: finished executing addx 5 (Register X is now 7))
+
+Start cycle   205: begin executing noop 
+During cycle  205: CRT draws pixel in position 4
+Current CRT row: .....
+
+Start cycle   206: begin executing noop 
+During cycle  206: CRT draws pixel in position 5
+Current CRT row: ......
+
+Start cycle   207: begin executing noop 
+During cycle  207: CRT draws pixel in position 6
+Current CRT row: ......#
+
+Start cycle   208: begin executing noop 
+During cycle  208: CRT draws pixel in position 7
+Current CRT row: ......##
+
+Start cycle   209: begin executing noop 
+During cycle  209: CRT draws pixel in position 8
+Current CRT row: ......###
+
+Start cycle   210: begin executing addx 4
+During cycle  210: CRT draws pixel in position 9
+Current CRT row: ......###.
+
+During cycle  211: CRT draws pixel in position 10
+Current CRT row: ......###..
+Ended cycle 211: finished executing addx 4 (Register X is now 11))
+
+Start cycle   212: begin executing addx 19
+During cycle  212: CRT draws pixel in position 11
+Current CRT row: ......###..#
+
+During cycle  213: CRT draws pixel in position 12
+Current CRT row: ......###..##
+Ended cycle 213: finished executing addx 19 (Register X is now 30))
+
+Start cycle   214: begin executing addx -15
+During cycle  214: CRT draws pixel in position 13
+Current CRT row: ......###..##.
+
+During cycle  215: CRT draws pixel in position 14
+Current CRT row: ......###..##..
+Ended cycle 215: finished executing addx -15 (Register X is now 15))
+
+Start cycle   216: begin executing addx 1
+During cycle  216: CRT draws pixel in position 15
+Current CRT row: ......###..##..#
+
+During cycle  217: CRT draws pixel in position 16
+Current CRT row: ......###..##..##
+Ended cycle 217: finished executing addx 1 (Register X is now 16))
+
+Start cycle   218: begin executing noop 
+During cycle  218: CRT draws pixel in position 17
+Current CRT row: ......###..##..###
+
+Start cycle   219: begin executing noop 
+During cycle  219: CRT draws pixel in position 18
+Current CRT row: ......###..##..###.
+
+Start cycle   220: begin executing addx 6
+During cycle  220: CRT draws pixel in position 19
+Current CRT row: ......###..##..###..
+
+During cycle  221: CRT draws pixel in position 20
+Current CRT row: ......###..##..###...
+Ended cycle 221: finished executing addx 6 (Register X is now 22))
+
+Start cycle   222: begin executing noop 
+During cycle  222: CRT draws pixel in position 21
+Current CRT row: ......###..##..###...#
+
+Start cycle   223: begin executing noop 
+During cycle  223: CRT draws pixel in position 22
+Current CRT row: ......###..##..###...##
+
+Start cycle   224: begin executing addx 5
+During cycle  224: CRT draws pixel in position 23
+Current CRT row: ......###..##..###...###
+
+During cycle  225: CRT draws pixel in position 24
+Current CRT row: ......###..##..###...###.
+Ended cycle 225: finished executing addx 5 (Register X is now 27))
+
+Start cycle   226: begin executing addx -1
+During cycle  226: CRT draws pixel in position 25
+Current CRT row: ......###..##..###...###..
+
+During cycle  227: CRT draws pixel in position 26
+Current CRT row: ......###..##..###...###..#
+Ended cycle 227: finished executing addx -1 (Register X is now 26))
+
+Start cycle   228: begin executing addx 5
+During cycle  228: CRT draws pixel in position 27
+Current CRT row: ......###..##..###...###..##
+
+During cycle  229: CRT draws pixel in position 28
+Current CRT row: ......###..##..###...###..##.
+Ended cycle 229: finished executing addx 5 (Register X is now 31))
+
+Start cycle   230: begin executing addx -14
+During cycle  230: CRT draws pixel in position 29
+Current CRT row: ......###..##..###...###..##..
+
+During cycle  231: CRT draws pixel in position 30
+Current CRT row: ......###..##..###...###..##..#
+Ended cycle 231: finished executing addx -14 (Register X is now 17))
+
+Start cycle   232: begin executing addx -13
+During cycle  232: CRT draws pixel in position 31
+Current CRT row: ......###..##..###...###..##..#.
+
+During cycle  233: CRT draws pixel in position 32
+Current CRT row: ......###..##..###...###..##..#..
+Ended cycle 233: finished executing addx -13 (Register X is now 4))
+
+Start cycle   234: begin executing addx 30
+During cycle  234: CRT draws pixel in position 33
+Current CRT row: ......###..##..###...###..##..#...
+
+During cycle  235: CRT draws pixel in position 34
+Current CRT row: ......###..##..###...###..##..#....
+Ended cycle 235: finished executing addx 30 (Register X is now 34))
+
+Start cycle   236: begin executing noop 
+During cycle  236: CRT draws pixel in position 35
+Current CRT row: ......###..##..###...###..##..#....#
+
+Start cycle   237: begin executing addx 3
+During cycle  237: CRT draws pixel in position 36
+Current CRT row: ......###..##..###...###..##..#....#.
+
+During cycle  238: CRT draws pixel in position 37
+Current CRT row: ......###..##..###...###..##..#....#..
+Ended cycle 238: finished executing addx 3 (Register X is now 37))
+
+Start cycle   239: begin executing noop 
+During cycle  239: CRT draws pixel in position 38
+Current CRT row: ......###..##..###...###..##..#....#..#
+
+Start cycle   240: begin executing noop 
+During cycle  240: CRT draws pixel in position 39
+Current CRT row: ......###..##..###...###..##..#....#..#.
+
+####..##....##.###...##...##..####.#..#.
+#....#..#....#.#..#.#..#.#..#.#....#.#..
+#.#..#.......#.###..#....#....###..##...
+#....#.##....#.#..#.#.##.#....#....#.#..
+####.#..#.#..#.#..#.#..#.#..#.#....#.#..
+......###..##..###...###..##..#....#..#.
