@@ -17,7 +17,7 @@ function solution() {
     let [instruction, value] = input[i],
         lifetime = getInstructionLifetime(instruction);
     for (let j = 1; j <= lifetime; j++) { // each cycle
-      let row = Math.floor((cycle - 1) / 40) ,
+      let row = Math.floor(cycle / 40),
           column = (cycle - 1) % 40;
       // if (j == 1)
       //   console.log(`Start cycle   ${cycle}: begin executing ${instruction} ${value ?? ''}`);
@@ -28,9 +28,8 @@ function solution() {
       // if CRT position, the column, is in the range of the horizontal position (the x register)
       if ([x - 1, x, x + 1].includes(column)) {
         part2[row][column] = '#'
+        // console.log(`Current CRT row: ${part2[row].slice(0, column + 1).join('')}`);
       }
-
-      // console.log(`Current CRT row: ${part2[row].slice(0, column + 1).join('')}`);
 
       if (instruction == "addx" && lifetime == j) { // the end of the cycle
         x += Number(value);
