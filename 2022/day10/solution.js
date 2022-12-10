@@ -16,7 +16,7 @@ function solution() {
   input.forEach((instruction) => {
     const [command, value] = instruction.split(" "),
           lifetime = getInstructionLifetime(command);
-    Array.from({ length: lifetime }, (_, j) => j + 1).forEach((j) => { // for each cycle the instruction executed
+    Array.from({ length: lifetime }, (_, i) => i + 1).forEach((age) => { // for each cycle the instruction executed
       const index = cycle - 1, 
           row = Math.trunc(index / 40),
           column = index % 40;
@@ -30,7 +30,7 @@ function solution() {
 
       // console.log(`Current CRT row: ${cathodeRayTube[row].slice(0, column + 1).join('')}`);
 
-      if (command == "addx" && lifetime == j) { // the end of the cycle
+      if (command == "addx" && lifetime == age) { // the end of the cycle
         x += Number(value);
 
         // console.log(`Ended cycle ${cycle}: finished executing ${input[i]} (Register X is now ${x}))`);
