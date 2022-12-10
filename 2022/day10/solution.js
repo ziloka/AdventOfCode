@@ -1,7 +1,7 @@
-const input = require('fs').readFileSync('./input.txt', 'utf8').split("\n").map((s) => s.split(" "));
+const input = require('fs').readFileSync('./input.txt', 'utf8').split("\n");
 
-function getInstructionLifetime(instruction) {
-  switch(instruction) {
+function getInstructionLifetime(command) {
+  switch(command) {
     case "addx": return 2;
     case "noop": return 1;
   }
@@ -9,42 +9,42 @@ function getInstructionLifetime(instruction) {
 
 function solution() {
   let part1 = 0,
-      // make matrix with 6 rows, 40 columns, filled with '.'
-      part2 = Array.from({ length: 6 }, () => Array.from({ length: 40 }, () => '.')),
+      // make matrix with 6 rows, 40 columns, filled with '.', which represents a dark pixel
+      cathodeRayTube = Array.from({ length: 6 }, () => Array.from({ length: 40 }, () => '.')),
       x = 1,
       cycle = 1;
-  for (let i = 0; i < input.length; i++) {
-    let [instruction, value] = input[i],
-        lifetime = getInstructionLifetime(instruction);
-    for (let j = 1; j <= lifetime; j++) { // for each cycle the instruction executed
-      let row = Math.floor((cycle - 1) / 40),
-          column = (cycle - 1) % 40;
+  input.forEach((instruction) => {
+    const [command, value] = instruction.split(" "),
+          lifetime = getInstructionLifetime(command);
+    Array.from({ length: lifetime }, (_, j) => j + 1).forEach((j) => { // for each cycle the instruction executed
+      const index = cycle - 1, 
+          row = Math.trunc(index / 40),
+          column = index % 40;
+
       // if (j == 1)
       //   console.log(`Start cycle   ${cycle}: begin executing ${instruction} ${value ?? ''}`);
-
-      // each cycle the crt draws
       // console.log(`During cycle  ${cycle}: CRT draws pixel in position ${column}`);
 
-      // if CRT position, the column, is in the range of the horizontal position (the x register)
-      if ([x - 1, x, x + 1].includes(column)) {
-        part2[row][column] = '#';
-      }
+      // if CRT position, the column, is in the range of the horizontal position (the x register), draw a lit pixel
+      if ([x - 1, x, x + 1].includes(column)) cathodeRayTube[row][column] = '#';
 
-      // console.log(`Current CRT row: ${part2[row].slice(0, column + 1).join('')}`);
+      // console.log(`Current CRT row: ${cathodeRayTube[row].slice(0, column + 1).join('')}`);
 
-      if (instruction == "addx" && lifetime == j) { // the end of the cycle
+      if (command == "addx" && lifetime == j) { // the end of the cycle
         x += Number(value);
+
         // console.log(`Ended cycle ${cycle}: finished executing ${input[i]} (Register X is now ${x}))`);
       }
+
       // console.log();
 
       cycle++;
 
       // add up the signal strength
       if (cycle % 40 == 20) part1 += cycle * x;
-    }
-  }
-  return [ part1, part2.map(row => row.join('')).join('\n') ];
+    });
+  });
+  return [ part1, cathodeRayTube.map(row => row.join('')).join('\n') ];
 }
 
 console.time();
