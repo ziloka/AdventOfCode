@@ -1,14 +1,4 @@
-FROM alpine:3.15.0
-
-# Setup vscode user
-ARG USERNAME=vscode
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
-RUN apk add sudo && \
-  addgroup $USERNAME && \
-  adduser -u $USER_UID -G $USERNAME -s /bin/sh -D $USERNAME && \
-  echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME && \
-  chmod 0440 /etc/sudoers.d/$USERNAME
+FROM mcr.microsoft.com/vscode/devcontainers/base:alpine
 
 # Install dependencies
 RUN apk add curl wget git nano file binutils util-linux
@@ -16,10 +6,9 @@ RUN apk add curl wget git nano file binutils util-linux
 # install nodejs-current for latest nodejs build
 # nodejs will install lts version
 RUN apk add --update nodejs npm python3 && \
-  cd /usr/bin && \
-  ln -s python3 python
+  cd /usr/bin
 
-# Install other langauges
+# Install other languages
 RUN apk add openjdk11-jdk gcc g++
   # Install rust 
   # curl -sSf https://sh.rustup.rs | sh -s -- -y && \
