@@ -4,7 +4,7 @@ with open("input.txt") as file:
 table = [[*line.strip()] for line in data]
 
 # check if there is symbol adjacent to number (including diagonally)
-def findSymbol(rowIndex, columnIndex, end, isSymbol, exclude=[]) -> (int, int):
+def findSymbol(rowIndex, columnIndex, isSymbol, exclude=[]) -> (int, int):
     valid = (-1, -1)
     for i in range(columnIndex, end):
         if i == columnIndex: # start of number
@@ -18,6 +18,7 @@ def findSymbol(rowIndex, columnIndex, end, isSymbol, exclude=[]) -> (int, int):
                     valid = (rowIndex+1, i-1)
                     break
             elif rowIndex == len(table)-1:
+
                 if i-1 >= 0 and not (rowIndex, i-1) in exclude and isSymbol(table[rowIndex][i-1]): # left side
                     valid = (rowIndex, i-1)
                     break
@@ -94,7 +95,7 @@ while rowIndex < len(table):
                 end += 1
             num = int("".join(table[rowIndex][columnIndex:end]))
             # part 1
-            symbolLocation = findSymbol(rowIndex, columnIndex, end, lambda c: c != "." and not c.isdigit())
+            symbolLocation = findSymbol(rowIndex, columnIndex, lambda c: c != "." and not c.isdigit())
             if symbolLocation != (-1, -1):
                 partNumbersSum += num
             # part 2
@@ -102,8 +103,9 @@ while rowIndex < len(table):
                 exclude = [(rowIndex, col) for col in range(columnIndex, end)]
                 if symbolLocation == (-1, -1):
                     exclude.append(symbolLocation)
-                numberLocation = findSymbol(symbolLocation[0], symbolLocation[1], symbolLocation[1]+1, lambda n: n.isdigit(), exclude)
+                numberLocation = findSymbol(symbolLocation[0], symbolLocation[1], lambda n: n.isdigit(), exclude)
                 if numberLocation != (-1, -1):
+                    # print(numberLocation)
                     num2End = numberLocation[1]
                     while num2End < len(table[numberLocation[0]]):
                         if not table[numberLocation[0]][num2End].isdigit():
@@ -115,8 +117,12 @@ while rowIndex < len(table):
                             break
                         start -= 1
                     start += 1
+                    # print(f"start: {start} {num2End}")
                     num2 = int("".join(table[numberLocation[0]][start:num2End]))
+                    # print(foundGears)
+                    # print(f"exclude: {exclude} {(rowIndex, columnIndex)} {(numberLocation[0], start)}")
                     if (rowIndex, columnIndex) != (numberLocation[0], start) and not [(rowIndex, columnIndex), (numberLocation[0], start)] in foundGears and not [(numberLocation[0], start), (rowIndex, columnIndex)] in foundGears:
+                        print(f"gear ratio: {num} {num2}")
                         foundGears.append([(rowIndex, columnIndex), (numberLocation[0], start)])
                         gearRatio = num * num2
                         gearRatioSum += gearRatio       
@@ -128,6 +134,4 @@ while rowIndex < len(table):
 # edge case .2=
 print(f"part 1: {partNumbersSum}")
 # 81338178 answer too high
-# 80253814
-# 701 127
 print(f"part 2: {gearRatioSum}")
