@@ -1,4 +1,4 @@
-FROM alpine:3.15.0
+FROM alpine:3.20
 
 # Setup vscode user
 ARG USERNAME=vscode
@@ -15,9 +15,7 @@ RUN apk add curl wget git nano file binutils util-linux
 
 # install nodejs-current for latest nodejs build
 # nodejs will install lts version
-RUN apk add --update nodejs npm python3 && \
-  cd /usr/bin && \
-  ln -s python3 python
+RUN apk add --update nodejs npm python3
 
 # Install other langauges
 RUN apk add openjdk11-jdk gcc g++
@@ -35,4 +33,4 @@ RUN apk add openjdk11-jdk gcc g++
 
 # https://stackoverflow.com/questions/52056387/how-to-install-go-in-alpine-linux
 # https://stackoverflow.com/a/59485924
-COPY --from=golang:1.17-alpine /usr/local/go/ /usr/local/go/
+# COPY --from=golang:1.17-alpine /usr/local/go/ /usr/local/go/
