@@ -5,11 +5,11 @@ class Direction(Enum):
     DECREASING = 2
 
 def isGoodLevel(currLevel, prevLevel, direction):
-    increasing = direction == Direction.DECREASING and currLevel < prevLevel
-    decreasing = direction == Direction.INCREASING and currLevel > prevLevel
+    increasing = direction == Direction.INCREASING and currLevel > prevLevel
+    decreasing = direction == Direction.DECREASING and currLevel < prevLevel
 
     differ = abs(currLevel - prevLevel)
-    adjacent = differ >= 1 and differ <= 3
+    adjacent = 1 <= differ <= 3
     
     return (increasing or decreasing) and adjacent
 
@@ -18,29 +18,27 @@ def determineDirection(currLevel, prevLevel):
         return Direction.INCREASING
     elif currLevel < prevLevel:
         return Direction.DECREASING
+    return None  # Explicitly return None if no direction can be determined
 
-def isReportSafe(levels, problemDamperEnabled = False, count = 0):
-
+def isReportSafe(levels, problemDamperEnabled=False, count=0):
     direction = None
     for i in range(1, len(levels)):
-        if i == 1:
-            if levels[i] > levels[i - 1]:
-                direction = Direction.INCREASING
-            elif levels[i] < levels[i - 1]:
-                direction = Direction.DECREASING
-        
-        if not isGoodLevel(levels[i], levels[i - 1], direction):
-            if problemDamperEnabled and count < 1:
-                for j in range(0, len(levels)-1):
-                    
-                    testCurr = levels[j + 1]
-                    testPrev = levels[0 if j == 0 else j - 1]
-                    newReport = levels[:j] + levels[j + 1:]
+        currLevel = levels[i]
+        prevLevel = levels[i - 1]
 
-                    if isGoodLevel(testCurr, testPrev, direction) and isReportSafe(newReport, problemDamperEnabled, count + 1):
+        if i == 1:
+            direction = determineDirection(currLevel, prevLevel)
+            if direction is None:  # Skip to the next level if direction cannot be determined
+                continue
+
+        if (direction is None and i == 0) or not isGoodLevel(currLevel, prevLevel, direction):
+            if problemDamperEnabled and count < 1:
+                for j in range(len(levels)):
+                    newReport = levels[:j] + levels[j + 1:]
+                    if isReportSafe(newReport, problemDamperEnabled, count + 1):
                         return True
-            break
-            
+            return False
+        
         if i == len(levels) - 1:
             return True
         
@@ -50,6 +48,7 @@ reports = open("input.txt").read().splitlines()
 
 parse = lambda report: [*map(int, report.split(" "))]
 
+# Part 1
 safe = 0
 for report in reports:
     if isReportSafe(parse(report), problemDamperEnabled=False):
@@ -57,19 +56,13 @@ for report in reports:
 
 print(f"part 1: {safe}")
 
-print(f"10 1 3 5 8, {isReportSafe(parse('10 1 3 5 8'), True)}")
-
+# Part 2
 safe = 0
-track = []
+diff2 = open("diff2.txt", "w")
 for report in reports:
     if isReportSafe(parse(report), problemDamperEnabled=True):
         safe += 1
+    else:
+        diff2.write(report + "\n")
 
-# 277 too low
-# 321 is wrong
 print(f"part 2: {safe}")
-
-# print("\n".join(track))
-
-# for report in track:
-#     print(f"{report}, {isReportSafe(parse(report), True)}")
