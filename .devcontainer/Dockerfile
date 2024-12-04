@@ -11,14 +11,14 @@ RUN apk add sudo && \
   chmod 0440 /etc/sudoers.d/$USERNAME
 
 # Install dependencies
-RUN apk add curl wget git nano file binutils util-linux
+# RUN apk add curl wget git nano file binutils util-linux
 
 # install nodejs-current for latest nodejs build
 # nodejs will install lts version
 RUN apk add --update nodejs npm python3
 
 # Install other langauges
-RUN apk add openjdk11-jdk gcc g++
+# RUN apk add openjdk11-jdk gcc g++
   # Install rust 
   # curl -sSf https://sh.rustup.rs | sh -s -- -y && \
   # source $HOME/.cargo/env && \
