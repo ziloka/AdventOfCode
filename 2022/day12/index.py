@@ -8,21 +8,21 @@ class OBJECT(Enum):
     AIR = "."
 
 class Waterfall:
-    def __init__(self):
+    def __init__(self, filename="example.txt"):
         self.sand_source = (500, 0)
 
         paths = []
         self.offset_x = math.inf
         self.max_x = 0
         self.max_y = 0
-        for line in open("example.txt").readlines():
+        for line in open(filename).readlines():
             path = []
             for coords in line.split(" -> "):
                 x, y = map(int, coords.split(","))
                 path.append((x, y))
 
-                if x > self.max_x:
-                    self.max_x = x
+                if x + 1 > self.max_x:
+                    self.max_x = x + 1
                 if y + 1> self.max_y:
                     self.max_y = y + 1
                 if x < self.offset_x:
@@ -34,8 +34,11 @@ class Waterfall:
         self.matrix_set(self.sand_source, OBJECT.SOURCE.value)
         self.place_rocks()
 
+    def normalize_cords(self, coords):
+        return (coords[0] - self.offset_x, coords[1])
+
     def matrix_get(self, coords):
-        coords = (coords[0] - self.offset_x, coords[1]) # (X, Y)
+        coords = self.normalize_cords(coords) # (X, Y)
         
         # if invalid position return None
         if 0 <= coords[1] < len(self.matrix) and 0 <= coords[0] < len(self.matrix[0]):
@@ -45,7 +48,7 @@ class Waterfall:
 
     def matrix_set(self, coords, object):
         # x coordinate is from the right, y coordinate is distance down
-        coords = (coords[0] - self.offset_x, coords[1]) # (X, Y)
+        coords = self.normalize_cords(coords) # (X, Y)
         self.matrix[coords[1]][coords[0]] = object
 
     def place_rocks(self):
@@ -60,7 +63,7 @@ class Waterfall:
                         self.matrix_set((start_coord[0], y), OBJECT.ROCK.value)
                 elif start_coord[1] == end_coord[1]: # horizontal
                     assert end_coord[0] < start_coord[0]
-                    for x in range(end_coord[0], start_coord[0]):
+                    for x in range(end_coord[0], start_coord[0]+1):
                         self.matrix_set((x, start_coord[1]), OBJECT.ROCK.value)
                 else:
                     raise Exception("Invalid path")
@@ -94,7 +97,7 @@ class Waterfall:
         while self.matrix_get((self.sand_source[0], self.sand_source[1]+2)) != OBJECT.SOURCE.value:
             new_sand_unit = self.sand_unit_movement([self.sand_source[0], self.sand_source[1]+1])
             if new_sand_unit == None:
-                waterfall.debug()
+                self.debug()
                 break
             self.matrix_set(new_sand_unit, OBJECT.SAND.value)
             counter += 1
