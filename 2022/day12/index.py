@@ -36,8 +36,8 @@ class Waterfall:
 
     def matrix_get(self, coords):
         # if invalid position return None
-        if 0 <= coords[0] < len(self.matrix) or 0 <= coords[1] < len(self.matrix[0]):
-            return None
+        # if 0 <= coords[0] < len(self.matrix) or 0 <= coords[1] < len(self.matrix[0]):
+        #     return None
 
         coords = (coords[0] - self.offset_x, coords[1]) # (X, Y)
         return self.matrix[coords[1]][coords[0]]
@@ -73,18 +73,17 @@ class Waterfall:
         while sand_unit[1] < self.max_y and self.matrix_get((sand_unit[0], sand_unit[1]+1)) == OBJECT.AIR.value:
             sand_unit[1] += 1
             # done exit program
-    
+
         # not free falling
-        # check if done, if not try moving one step down to the right, or left
-        # if self.matrix_get((sand_unit[0], sand_unit[1]+1)) == None:
-        #     return sand_unit
-        # el
+        # try moving one step down to the right
         if self.matrix_get((sand_unit[0]+1, sand_unit[1]+1)) == OBJECT.AIR.value: 
             sand_unit[1] += 1
             sand_unit[0] += 1
         elif self.matrix_get((sand_unit[0]-1, sand_unit[1]+1)) == OBJECT.AIR.value:
             sand_unit[1] += 1
             sand_unit[0] -= 1
+        else:
+            return sand_unit
         return self.sand_unit_movement(sand_unit)
 
     def start_sand(self):
