@@ -1,3 +1,5 @@
+import time
+
 def parse(filename):
     puzzle_input = open(filename).read()
     page_ordering_rules, pages_to_produce = puzzle_input.split("\n\n")
@@ -54,8 +56,10 @@ def part2(page_ordering_rules, updates):
             sum_middle_pages += page_nums[len(page_nums) // 2]
     return sum_middle_pages
 
+start = time.time()
 args = parse("input.txt")
 print(f"part 1: {part1(*args)}")
 
 # edge case: 97,13,47,75,29
 print(f"part 2: {part2(*args)}") 
+print(f"time: {time.time() - start:.2f}s")
