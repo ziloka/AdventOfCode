@@ -72,25 +72,28 @@ class Waterfall:
     def sand_unit_movement(self, sand_unit):
         while sand_unit[1] < self.max_y and self.matrix_get((sand_unit[0], sand_unit[1]+1)) == OBJECT.AIR.value:
             sand_unit[1] += 1
+            # done exit program
+    
         # not free falling
-        # try moving one step down to the right
+        # check if done, if not try moving one step down to the right, or left
+        # if self.matrix_get((sand_unit[0], sand_unit[1]+1)) == None:
+        #     return sand_unit
+        # el
         if self.matrix_get((sand_unit[0]+1, sand_unit[1]+1)) == OBJECT.AIR.value: 
             sand_unit[1] += 1
             sand_unit[0] += 1
         elif self.matrix_get((sand_unit[0]-1, sand_unit[1]+1)) == OBJECT.AIR.value:
             sand_unit[1] += 1
             sand_unit[0] -= 1
-        else:
-            return sand_unit
         return self.sand_unit_movement(sand_unit)
 
     def start_sand(self):
         counter = 0
         while self.matrix_get((self.sand_source[0], self.sand_source[1]+2)) != OBJECT.SOURCE.value:
-            new_sand_unit = self.sand_unit_movement([self.sand_source[0]+1, self.sand_source[1]])
+            new_sand_unit = self.sand_unit_movement([self.sand_source[0], self.sand_source[1]+1])
             self.matrix_set(new_sand_unit, OBJECT.SAND.value)
             counter += 1
-            print('stuck')
+            waterfall.debug()
         return counter
 
 waterfall = Waterfall()
