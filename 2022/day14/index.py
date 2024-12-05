@@ -99,11 +99,55 @@ class Waterfall:
         while self.part1_matrix_get((self.sand_source[0], self.sand_source[1]+2)) != OBJECT.SOURCE.value:
             new_abs_sand_unit = self.part1_sand_unit_movement_helper([self.sand_source[0], self.sand_source[1]+1])
             if new_abs_sand_unit == None:
-                self.debug()
+                # self.debug()
                 break
             self.matrix_set(new_abs_sand_unit, OBJECT.SAND.value)
             counter += 1
         return counter
+
+    def part2_matrix_get(self, absolute_coords):
+        rel_coords = self.normalize_cords(absolute_coords) # (X, Y)
+        
+        # if invalid position return None
+        # expand the matrix, horizontally
+        if 0 <= rel_coords[0] < len(self.matrix[0]):
+            # expand left or right side
+            if rel_coords[0] < 0:
+                print("expanding leftwards")
+                n = self.offset_x - rel_coords[0]
+                self.offset_x = rel_coords[0]
+                # add n columns to each row starting on the left and going to the left
+                for i in range(len(self.matrix)):
+                    self.matrix[i] = [OBJECT.AIR.value] * n + self.matrix[i]
+            elif rel_coords[0] >= self.max_x - self.offset_x:
+                print("expanding rightwards")
+                # add n columns to each row starting on the right and going to the right
+                n = rel_coords[0] - self.max_x
+                self.max_x = rel_coords[0]
+                for i in range(len(self.matrix)):
+                    self.matrix[i] = self.matrix[i] + [OBJECT.AIR.value] * n
+        if 0 <= rel_coords[1] < len(self.matrix):
+            return self.matrix[rel_coords[1]][rel_coords[0]]
+        else:
+            return None
+
+    def part2_sand_unit_movement_helper(self, abs_sand_unit):
+        while abs_sand_unit[1] < self.max_y and self.part2_matrix_get((abs_sand_unit[0], abs_sand_unit[1]+1)) == OBJECT.AIR.value:
+            abs_sand_unit[1] += 1
+
+        # not free falling
+        # try moving one step down to the right
+        if self.part2_matrix_get((abs_sand_unit[0]+1, abs_sand_unit[1]+1)) == None or self.part2_matrix_get((abs_sand_unit[0]-1, abs_sand_unit[1]+1)) == None:
+            return None
+        elif self.part2_matrix_get((abs_sand_unit[0]-1, abs_sand_unit[1]+1)) == OBJECT.AIR.value:
+            abs_sand_unit[1] += 1
+            abs_sand_unit[0] -= 1
+        elif self.part2_matrix_get((abs_sand_unit[0]+1, abs_sand_unit[1]+1)) == OBJECT.AIR.value: 
+            abs_sand_unit[1] += 1
+            abs_sand_unit[0] += 1
+        else:
+            return abs_sand_unit
+        return self.part2_sand_unit_movement_helper(abs_sand_unit)
     
     def part2_start_sand(self):
         self.matrix = [["."] * (self.max_x-self.offset_x) for _ in range(self.max_y + 2)]
@@ -120,44 +164,8 @@ class Waterfall:
             counter += 1
         return counter
 
-    def part2_matrix_get(self, absolute_coords):
-        rel_coords = self.normalize_cords(absolute_coords) # (X, Y)
-        
-        # if invalid position return None
-        # expand the matrix, horizontally
-        if 0 <= rel_coords[0] < len(self.matrix[0]):
-            # expand left or right side
-            if rel_coords[0] < 0:
-                # self.matrix = [["."] * (self.max_x-self.offset_x) for _ in range(self.max_y + 2)]
-                pass
-            elif rel_coords[0] >= self.max_x - self.offset_x:
-                # self.matrix = [["."] * (self.max_x-self.offset_x) for _ in range(self.max_y + 2)]
-                pass
-        if 0 <= rel_coords[1] < len(self.matrix):
-            return self.matrix[rel_coords[1]][rel_coords[0]]
-        else:
-            return None
+# waterfall = Waterfall("input.txt")
+waterfall = Waterfall()
 
-    def part2_sand_unit_movement_helper(self, abs_sand_unit):
-        while abs_sand_unit[1] < self.max_y and self.matrix_get_part2((abs_sand_unit[0], abs_sand_unit[1]+1)) == OBJECT.AIR.value:
-            abs_sand_unit[1] += 1
-
-        # not free falling
-        # try moving one step down to the right
-        if self.matrix_get_part2((abs_sand_unit[0]+1, abs_sand_unit[1]+1)) == None or self.matrix_get_part2((abs_sand_unit[0]-1, abs_sand_unit[1]+1)) == None:
-            return None
-        elif self.matrix_get_part2((abs_sand_unit[0]-1, abs_sand_unit[1]+1)) == OBJECT.AIR.value:
-            abs_sand_unit[1] += 1
-            abs_sand_unit[0] -= 1
-        elif self.matrix_get_part2((abs_sand_unit[0]+1, abs_sand_unit[1]+1)) == OBJECT.AIR.value: 
-            abs_sand_unit[1] += 1
-            abs_sand_unit[0] += 1
-        else:
-            return abs_sand_unit
-        return self.sand_unit_movement(abs_sand_unit)
-
-waterfall = Waterfall("input.txt")
-
-waterfall.debug()
 print(f"part 1: {waterfall.part1_start_sand()}")
-# print(f"part 2: {waterfall.part2_start_sand()}")
+print(f"part 2: {waterfall.part2_start_sand()}")
