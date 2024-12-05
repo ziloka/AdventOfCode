@@ -62,7 +62,7 @@ def fix_page_nums(page_ordering_rules, page_nums):
         # mimick in ordered_positions
         ordered_positions[i], ordered_positions[min_idx] = ordered_positions[min_idx], ordered_positions[i]
         # swap_pos += 1
-    print()
+    # print()
 
     assert is_valid(page_ordering_rules, page_nums)
 
@@ -76,7 +76,7 @@ def part2(page_ordering_rules, updates):
             sum_middle_pages += page_nums[len(page_nums) // 2]
     return sum_middle_pages
 
-args = parse("example.txt")
+args = parse("input.txt")
 print(f"part 1: {part1(*args)}")
 
 # 11666 is too high
