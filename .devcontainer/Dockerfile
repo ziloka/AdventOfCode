@@ -11,7 +11,7 @@ RUN apk add sudo && \
   chmod 0440 /etc/sudoers.d/$USERNAME
 
 # Install dependencies
-# RUN apk add curl wget git nano file binutils util-linux
+RUN apk add curl wget git nano file binutils util-linux bash
 
 # install nodejs-current for latest nodejs build
 # nodejs will install lts version
