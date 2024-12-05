@@ -35,12 +35,13 @@ class Waterfall:
         self.place_rocks()
 
     def matrix_get(self, coords):
-        # if invalid position return None
-        # if 0 <= coords[0] < len(self.matrix) or 0 <= coords[1] < len(self.matrix[0]):
-        #     return None
-
         coords = (coords[0] - self.offset_x, coords[1]) # (X, Y)
-        return self.matrix[coords[1]][coords[0]]
+        
+        # if invalid position return None
+        if 0 <= coords[0] < len(self.matrix) or 0 <= coords[1] < len(self.matrix[0]):
+            return self.matrix[coords[1]][coords[0]]
+        else:
+            return None
 
     def matrix_set(self, coords, object):
         # x coordinate is from the right, y coordinate is distance down
@@ -76,7 +77,9 @@ class Waterfall:
 
         # not free falling
         # try moving one step down to the right
-        if self.matrix_get((sand_unit[0]+1, sand_unit[1]+1)) == OBJECT.AIR.value: 
+        if self.matrix_get((sand_unit[0]+1, sand_unit[1]+1)) == None or self.matrix_get((sand_unit[0]-1, sand_unit[1]+1)) == None:
+            return None
+        elif self.matrix_get((sand_unit[0]+1, sand_unit[1]+1)) == OBJECT.AIR.value: 
             sand_unit[1] += 1
             sand_unit[0] += 1
         elif self.matrix_get((sand_unit[0]-1, sand_unit[1]+1)) == OBJECT.AIR.value:
@@ -90,6 +93,8 @@ class Waterfall:
         counter = 0
         while self.matrix_get((self.sand_source[0], self.sand_source[1]+2)) != OBJECT.SOURCE.value:
             new_sand_unit = self.sand_unit_movement([self.sand_source[0], self.sand_source[1]+1])
+            if new_sand_unit == None:
+                break
             self.matrix_set(new_sand_unit, OBJECT.SAND.value)
             counter += 1
             waterfall.debug()
