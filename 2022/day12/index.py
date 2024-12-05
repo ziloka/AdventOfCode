@@ -38,7 +38,7 @@ class Waterfall:
         coords = (coords[0] - self.offset_x, coords[1]) # (X, Y)
         
         # if invalid position return None
-        if 0 <= coords[0] < len(self.matrix) or 0 <= coords[1] < len(self.matrix[0]):
+        if 0 <= coords[1] < len(self.matrix) and 0 <= coords[0] < len(self.matrix[0]):
             return self.matrix[coords[1]][coords[0]]
         else:
             return None
@@ -94,10 +94,10 @@ class Waterfall:
         while self.matrix_get((self.sand_source[0], self.sand_source[1]+2)) != OBJECT.SOURCE.value:
             new_sand_unit = self.sand_unit_movement([self.sand_source[0], self.sand_source[1]+1])
             if new_sand_unit == None:
+                waterfall.debug()
                 break
             self.matrix_set(new_sand_unit, OBJECT.SAND.value)
             counter += 1
-            waterfall.debug()
         return counter
 
 waterfall = Waterfall()
