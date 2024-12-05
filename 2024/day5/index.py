@@ -1,4 +1,4 @@
-puzzle_input = open("example.txt").read()
+puzzle_input = open("input.txt").read()
 page_ordering_rules, pages_to_produce = puzzle_input.split("\n\n")
 page_ordering_rules = [*map(lambda s: [*map(int, s.split("|"))], page_ordering_rules.split("\n"))]
 updates = [*map(lambda s: [*map(int, s.split(","))], pages_to_produce.split("\n"))]
@@ -33,8 +33,6 @@ def fix_page_nums(page_nums):
                 second = page_nums.index(rules[1])
                 if first > second:
                     page_nums[second], page_nums[first] = page_nums[first], page_nums[second]
-                else:
-                    page_nums[first], page_nums[second] = page_nums[second], page_nums[first]
     return page_nums[::-1]
 
 def part2():
@@ -45,4 +43,4 @@ def part2():
         sum_middle_pages += page_nums[len(page_nums) // 2]
     return sum_middle_pages
 
-print(f"part 2: {part2()}")
+print(f"part 2: {part2()}") # 11666 is too high
