@@ -17,8 +17,8 @@ class Waterfall:
         self.max_y = 0
         for line in open(filename).readlines():
             path = []
-            for coords in line.split(" -> "):
-                x, y = map(int, coords.split(","))
+            for absolute_coords in line.split(" -> "):
+                x, y = map(int, absolute_coords.split(","))
                 path.append((x, y))
 
                 if x + 1 > self.max_x:
@@ -34,22 +34,13 @@ class Waterfall:
         self.matrix_set(self.sand_source, OBJECT.SOURCE.value)
         self.place_rocks()
 
-    def normalize_cords(self, coords):
-        return (coords[0] - self.offset_x, coords[1])
+    def normalize_cords(self, absolute_coords):
+        return (absolute_coords[0] - self.offset_x, absolute_coords[1])
 
-    def matrix_get(self, coords):
-        coords = self.normalize_cords(coords) # (X, Y)
-        
-        # if invalid position return None
-        if 0 <= coords[1] < len(self.matrix) and 0 <= coords[0] < len(self.matrix[0]):
-            return self.matrix[coords[1]][coords[0]]
-        else:
-            return None
-
-    def matrix_set(self, coords, object):
+    def matrix_set(self, relative_coords, object):
         # x coordinate is from the right, y coordinate is distance down
-        coords = self.normalize_cords(coords) # (X, Y)
-        self.matrix[coords[1]][coords[0]] = object
+        relative_coords = self.normalize_cords(relative_coords) # (X, Y)
+        self.matrix[relative_coords[1]][relative_coords[0]] = object
 
     def place_rocks(self):
         for path in self.paths:
@@ -76,36 +67,97 @@ class Waterfall:
             print("".join(line))
         print()
 
-    def sand_unit_movement(self, sand_unit):
-        while sand_unit[1] < self.max_y and self.matrix_get((sand_unit[0], sand_unit[1]+1)) == OBJECT.AIR.value:
-            sand_unit[1] += 1
-            # done exit program
+    def part1_matrix_get(self, absolute_coords):
+        rel_coords = self.normalize_cords(absolute_coords) # (X, Y)
+        
+        # if invalid position return None
+        if 0 <= rel_coords[1] < len(self.matrix) and 0 <= rel_coords[0] < len(self.matrix[0]):
+            return self.matrix[rel_coords[1]][rel_coords[0]]
+        else:
+            return None
+
+    def part1_sand_unit_movement_helper(self, abs_sand_unit):
+        while abs_sand_unit[1] < self.max_y and self.part1_matrix_get((abs_sand_unit[0], abs_sand_unit[1]+1)) == OBJECT.AIR.value:
+            abs_sand_unit[1] += 1
 
         # not free falling
         # try moving one step down to the right
-        if self.matrix_get((sand_unit[0]+1, sand_unit[1]+1)) == None or self.matrix_get((sand_unit[0]-1, sand_unit[1]+1)) == None:
+        if self.part1_matrix_get((abs_sand_unit[0]+1, abs_sand_unit[1]+1)) == None or self.part1_matrix_get((abs_sand_unit[0]-1, abs_sand_unit[1]+1)) == None:
             return None
-        elif self.matrix_get((sand_unit[0]-1, sand_unit[1]+1)) == OBJECT.AIR.value:
-            sand_unit[1] += 1
-            sand_unit[0] -= 1
-        elif self.matrix_get((sand_unit[0]+1, sand_unit[1]+1)) == OBJECT.AIR.value: 
-            sand_unit[1] += 1
-            sand_unit[0] += 1
+        elif self.part1_matrix_get((abs_sand_unit[0]-1, abs_sand_unit[1]+1)) == OBJECT.AIR.value:
+            abs_sand_unit[1] += 1
+            abs_sand_unit[0] -= 1
+        elif self.part1_matrix_get((abs_sand_unit[0]+1, abs_sand_unit[1]+1)) == OBJECT.AIR.value: 
+            abs_sand_unit[1] += 1
+            abs_sand_unit[0] += 1
         else:
-            return sand_unit
-        return self.sand_unit_movement(sand_unit)
+            return abs_sand_unit
+        return self.part1_sand_unit_movement_helper(abs_sand_unit)
 
-    def start_sand(self):
+    def part1_start_sand(self):
         counter = 0
-        while self.matrix_get((self.sand_source[0], self.sand_source[1]+2)) != OBJECT.SOURCE.value:
-            new_sand_unit = self.sand_unit_movement([self.sand_source[0], self.sand_source[1]+1])
-            if new_sand_unit == None:
+        while self.part1_matrix_get((self.sand_source[0], self.sand_source[1]+2)) != OBJECT.SOURCE.value:
+            new_abs_sand_unit = self.part1_sand_unit_movement_helper([self.sand_source[0], self.sand_source[1]+1])
+            if new_abs_sand_unit == None:
                 self.debug()
                 break
-            self.matrix_set(new_sand_unit, OBJECT.SAND.value)
+            self.matrix_set(new_abs_sand_unit, OBJECT.SAND.value)
+            counter += 1
+        return counter
+    
+    def part2_start_sand(self):
+        self.matrix = [["."] * (self.max_x-self.offset_x) for _ in range(self.max_y + 2)]
+        self.matrix_set(self.sand_source, OBJECT.SOURCE.value)
+        self.place_rocks()
+
+        counter = 0
+        while self.part2_matrix_get((self.sand_source[0], self.sand_source[1])) != OBJECT.SAND.value:
+            new_abs_sand_unit = self.part2_sand_unit_movement_helper([self.sand_source[0], self.sand_source[1]+1])
+            if new_abs_sand_unit == None:
+                self.debug()
+                break
+            self.matrix_set(new_abs_sand_unit, OBJECT.SAND.value)
             counter += 1
         return counter
 
+    def part2_matrix_get(self, absolute_coords):
+        rel_coords = self.normalize_cords(absolute_coords) # (X, Y)
+        
+        # if invalid position return None
+        # expand the matrix, horizontally
+        if 0 <= rel_coords[0] < len(self.matrix[0]):
+            # expand left or right side
+            if rel_coords[0] < 0:
+                # self.matrix = [["."] * (self.max_x-self.offset_x) for _ in range(self.max_y + 2)]
+                pass
+            elif rel_coords[0] >= self.max_x - self.offset_x:
+                # self.matrix = [["."] * (self.max_x-self.offset_x) for _ in range(self.max_y + 2)]
+                pass
+        if 0 <= rel_coords[1] < len(self.matrix):
+            return self.matrix[rel_coords[1]][rel_coords[0]]
+        else:
+            return None
+
+    def part2_sand_unit_movement_helper(self, abs_sand_unit):
+        while abs_sand_unit[1] < self.max_y and self.matrix_get_part2((abs_sand_unit[0], abs_sand_unit[1]+1)) == OBJECT.AIR.value:
+            abs_sand_unit[1] += 1
+
+        # not free falling
+        # try moving one step down to the right
+        if self.matrix_get_part2((abs_sand_unit[0]+1, abs_sand_unit[1]+1)) == None or self.matrix_get_part2((abs_sand_unit[0]-1, abs_sand_unit[1]+1)) == None:
+            return None
+        elif self.matrix_get_part2((abs_sand_unit[0]-1, abs_sand_unit[1]+1)) == OBJECT.AIR.value:
+            abs_sand_unit[1] += 1
+            abs_sand_unit[0] -= 1
+        elif self.matrix_get_part2((abs_sand_unit[0]+1, abs_sand_unit[1]+1)) == OBJECT.AIR.value: 
+            abs_sand_unit[1] += 1
+            abs_sand_unit[0] += 1
+        else:
+            return abs_sand_unit
+        return self.sand_unit_movement(abs_sand_unit)
+
 waterfall = Waterfall("input.txt")
+
 waterfall.debug()
-print(f"part 1: {waterfall.start_sand()}")
+print(f"part 1: {waterfall.part1_start_sand()}")
+# print(f"part 2: {waterfall.part2_start_sand()}")
