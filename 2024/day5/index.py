@@ -27,29 +27,11 @@ def part1(page_ordering_rules, updates):
 def fix_page_nums(page_ordering_rules, page_nums):
     ordered_positions = []
     for i in range(len(page_nums)):
-        encounters_left = 0
         encounters_right = 0
         for rules in page_ordering_rules:
-            if rules[0] in page_nums and rules[1] in page_nums:
-                if page_nums[i] == rules[0] and rules[1] in page_nums:
-                    encounters_left += 1
-                elif page_nums[i] == rules[1] and rules[0] in page_nums:
+            if rules[0] in page_nums and rules[1] in page_nums and page_nums[i] == rules[1]:
                     encounters_right += 1
-        
-        # perform selection sort, figure out first position, then second position, and so forth
-        expected_left_encounter = len(page_nums)-i-1
-        expected_right_encounter = i
-        # print(encounters_right, i)
         ordered_positions.append(encounters_right)
-        # page_nums[encounters_left], page_nums[swap_pos] = page_nums[swap_pos], page_nums[encounters_left]
-
-
-        # print(encounters_left, encounters_right)
-       
-        # if encounters_left + encounters_right == len(page_nums)-1:
-        #     page_nums[i], page_nums[swap_pos] = page_nums[swap_pos], page_nums[i]
-        #     # page_nums[swap_pos], page_nums[i] = page_nums[i], page_nums[swap_pos]
-        #     swap_pos += 1
 
     # selection sort
     for i in range(len(ordered_positions)):
@@ -58,11 +40,7 @@ def fix_page_nums(page_ordering_rules, page_nums):
             if ordered_positions[j] < ordered_positions[min_idx]:
                 min_idx = j
         page_nums[i], page_nums[min_idx] = page_nums[min_idx], page_nums[i]
-
-        # mimick in ordered_positions
         ordered_positions[i], ordered_positions[min_idx] = ordered_positions[min_idx], ordered_positions[i]
-        # swap_pos += 1
-    # print()
 
     assert is_valid(page_ordering_rules, page_nums)
 
@@ -78,9 +56,6 @@ def part2(page_ordering_rules, updates):
 
 args = parse("input.txt")
 print(f"part 1: {part1(*args)}")
-
-# 11666 is too high
-# 5282 too low
 
 # edge case: 97,13,47,75,29
 print(f"part 2: {part2(*args)}") 
