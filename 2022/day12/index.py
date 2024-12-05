@@ -82,12 +82,12 @@ class Waterfall:
         # try moving one step down to the right
         if self.matrix_get((sand_unit[0]+1, sand_unit[1]+1)) == None or self.matrix_get((sand_unit[0]-1, sand_unit[1]+1)) == None:
             return None
-        elif self.matrix_get((sand_unit[0]+1, sand_unit[1]+1)) == OBJECT.AIR.value: 
-            sand_unit[1] += 1
-            sand_unit[0] += 1
         elif self.matrix_get((sand_unit[0]-1, sand_unit[1]+1)) == OBJECT.AIR.value:
             sand_unit[1] += 1
             sand_unit[0] -= 1
+        elif self.matrix_get((sand_unit[0]+1, sand_unit[1]+1)) == OBJECT.AIR.value: 
+            sand_unit[1] += 1
+            sand_unit[0] += 1
         else:
             return sand_unit
         return self.sand_unit_movement(sand_unit)
