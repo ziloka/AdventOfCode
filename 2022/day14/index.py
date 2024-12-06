@@ -110,20 +110,16 @@ class Waterfall:
             n = self.offset_x - absolute_coords[0]
             self.offset_x = absolute_coords[0]
             # add n columns to each row starting on the left and going to the left
-            for i in range(len(self.matrix)):
-                if i == len(self.matrix) - 1:
-                    self.matrix[i] = [OBJECT.ROCK.value] * n + self.matrix[i]
-                else: 
-                    self.matrix[i] = [OBJECT.AIR.value] * n + self.matrix[i]
+            for i in range(len(self.matrix)-1):
+                self.matrix[i] = [OBJECT.AIR.value] * n + self.matrix[i]
+            self.matrix[-1] = [OBJECT.ROCK.value] * n + self.matrix[-1]
         elif absolute_coords[0] >= self.max_x:
             # add n columns to each row starting on the right and going to the right
             n = absolute_coords[0] - self.max_x + 1
             self.max_x = absolute_coords[0] + 1
-            for i in range(len(self.matrix)):
-                if i == len(self.matrix) - 1:
-                    self.matrix[i] = [OBJECT.ROCK.value] * n + self.matrix[i]
-                else:
-                    self.matrix[i] = self.matrix[i] + [OBJECT.AIR.value] * n
+            for i in range(len(self.matrix)-1):
+                self.matrix[i] = self.matrix[i] + [OBJECT.AIR.value] * n
+            self.matrix[-1] = [OBJECT.ROCK.value] * n + self.matrix[-1]
         # if invalid position return None
         rel_coords = self.normalize_cords(absolute_coords) # (X, Y)
         if 0 <= rel_coords[1] < len(self.matrix):
