@@ -1,22 +1,27 @@
+import inspect
 from enum import Enum
 
+# https://stackoverflow.com/a/19300424
 class GUARD(Enum):
-    UP = "^"
-    RIGHT = ">"
-    DOWN = "v"
-    LEFT = "<"
+    def __new__(cls, *args, **kwds):
+          value = len(cls.__members__) + 1
+          obj = object.__new__(cls)
+          obj._value_ = value
+          return obj
+    def __init__(self, a, b):
+        self.num = a
+        self.char = b
 
-class ROTATION(Enum):
-    UP = 1
-    RIGHT = 2
-    DOWN = 3
-    LEFT = 4
+    UP = 1, "^",
+    RIGHT = 2, ">",
+    DOWN = 3, "v"
+    LEFT = 4, "<"
 
 class OBJECT(Enum):
     OBSTRUCTION = "#"
     EMPTY = "."
 
-class PatrolRoute():
+class Map():
     def __init__(self, filename="example.txt"):
         self.init(filename)
     
@@ -51,11 +56,10 @@ class PatrolRoute():
     def set_visual_element(self, coords, value):
         self.visual[coords[0]][coords[1]] = value
 
-    def forward(self):
+    def execute_protocol(self):
         positions = []
         guard = self.get_element(self.guard_pos)
-        # go forward
-        if guard == GUARD.UP.value and self.get_element([self.guard_pos[0]-1, self.guard_pos[1]]) != OBJECT.OBSTRUCTION.value:
+        if guard == GUARD.UP.char and self.get_element([self.guard_pos[0]-1, self.guard_pos[1]]) != OBJECT.OBSTRUCTION.value:
             while self.get_element([self.guard_pos[0]-1, self.guard_pos[1]]) != OBJECT.OBSTRUCTION.value:
                 self.set_element(self.guard_pos, OBJECT.EMPTY.value)
                 self.set_visual_element(self.guard_pos, "X")
@@ -63,8 +67,8 @@ class PatrolRoute():
                 if not self.is_valid_pos(self.guard_pos):
                     return [*positions, None]
                 positions.append(self.guard_pos.copy())
-                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.UP.value
-        elif guard == GUARD.DOWN.value and self.get_element([self.guard_pos[0]+1, self.guard_pos[1]]) != OBJECT.OBSTRUCTION.value:
+                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.UP.char
+        elif guard == GUARD.DOWN.char and self.get_element([self.guard_pos[0]+1, self.guard_pos[1]]) != OBJECT.OBSTRUCTION.value:
             while self.get_element([self.guard_pos[0]+1, self.guard_pos[1]]) != OBJECT.OBSTRUCTION.value:
                 self.set_element(self.guard_pos, OBJECT.EMPTY.value)
                 self.set_visual_element(self.guard_pos, "X")
@@ -72,8 +76,8 @@ class PatrolRoute():
                 if not self.is_valid_pos(self.guard_pos):
                     return [*positions, None]
                 positions.append(self.guard_pos.copy())
-                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.DOWN.value
-        elif guard == GUARD.LEFT.value and self.get_element([self.guard_pos[0], self.guard_pos[1]-1]) != OBJECT.OBSTRUCTION.value:
+                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.DOWN.char
+        elif guard == GUARD.LEFT.char and self.get_element([self.guard_pos[0], self.guard_pos[1]-1]) != OBJECT.OBSTRUCTION.value:
             while self.get_element([self.guard_pos[0], self.guard_pos[1]-1]) != OBJECT.OBSTRUCTION.value:
                 self.set_element(self.guard_pos, OBJECT.EMPTY.value)
                 self.set_visual_element(self.guard_pos, "X")
@@ -81,8 +85,8 @@ class PatrolRoute():
                 if not self.is_valid_pos(self.guard_pos):
                     return [*positions, None]
                 positions.append(self.guard_pos.copy())
-                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.LEFT.value
-        elif guard == GUARD.RIGHT.value and self.get_element([self.guard_pos[0], self.guard_pos[1]+1]) != OBJECT.OBSTRUCTION.value:
+                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.LEFT.char
+        elif guard == GUARD.RIGHT.char and self.get_element([self.guard_pos[0], self.guard_pos[1]+1]) != OBJECT.OBSTRUCTION.value:
             while self.get_element([self.guard_pos[0], self.guard_pos[1]+1]) != OBJECT.OBSTRUCTION.value:
                 self.set_element(self.guard_pos, OBJECT.EMPTY.value)
                 self.set_visual_element(self.guard_pos, "X")
@@ -90,29 +94,20 @@ class PatrolRoute():
                 if not self.is_valid_pos(self.guard_pos):
                     return [*positions, None]
                 positions.append(self.guard_pos.copy())
-                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.RIGHT.value
-        return positions
-    
-    # follow strict protocol, ONLY rotate clockwise in front of obstruction
-    def turn(self):
-        guard = self.get_element(self.guard_pos)
-        match guard:
-            case GUARD.LEFT.value:
-                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.UP.value
-            case GUARD.UP.value:
-                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.RIGHT.value
-            case GUARD.RIGHT.value:
-                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.DOWN.value
-            case GUARD.DOWN.value:
-                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.LEFT.value
-            case _:
-                raise Exception(f"unexpected guard got: {guard}, expected {', '.join(map(lambda e: e.value, GUARD))}")
+                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.RIGHT.char
 
-    def execute_protocol(self):
-        positions = self.forward()
-        if positions[-1] == None:
-            return positions
-        self.turn()
+        # guard in front of obstruction
+        match guard:
+            case GUARD.LEFT.char:
+                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.UP.char
+            case GUARD.UP.char:
+                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.RIGHT.char
+            case GUARD.RIGHT.char:
+                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.DOWN.char
+            case GUARD.DOWN.char:
+                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.LEFT.char
+            case _:
+                raise Exception("invalid guard")
         return positions
         
     def part1(self):
@@ -135,13 +130,22 @@ class PatrolRoute():
 
     def inf_loops(self, positions):
         # if guard goes on the same path twice, it is an inf loop
-        # trying placing an obstruction on the right side of the guard to make inf loop
-
+        # if guard makes three direction turns, try placing an obstruction to create inf loop
+        POSSIBLITIES = [
+            [GUARD.UP.value, GUARD.LEFT.value, GUARD.RIGHT.value],
+            [GUARD.LEFT.value, GUARD.RIGHT.value],
+            [GUARD.UP.value, GUARD.LEFT.value],
+            [GUARD.DOWN.value, GUARD.RIGHT.value]
+        ]
+        
         pass
+
     def part2(self):
         self.init()
 
 
-patrol_route = PatrolRoute("input.txt")
-print(f"part 1: {patrol_route.part1()}")
+map = Map("input.txt")
+# map.debug()
+print(GUARD.UP.char)
+print(f"part 1: {map.part1()}")
 # print(matrix)
