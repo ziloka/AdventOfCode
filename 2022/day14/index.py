@@ -112,7 +112,10 @@ class Waterfall:
             self.offset_x = absolute_coords[0]
             # add n columns to each row starting on the left and going to the left
             for i in range(len(self.matrix)):
-                self.matrix[i] = [OBJECT.AIR.value] * n + self.matrix[i]
+                if i == len(self.matrix) - 1:
+                    self.matrix[i] = [OBJECT.ROCK.value] * n + self.matrix[i]
+                else: 
+                    self.matrix[i] = [OBJECT.AIR.value] * n + self.matrix[i]
             self.debug()
         elif absolute_coords[0] > self.max_x:
             print("expanding rightwards")
@@ -120,7 +123,10 @@ class Waterfall:
             n = absolute_coords[0] - self.max_x
             self.max_x = absolute_coords[0]
             for i in range(len(self.matrix)):
-                self.matrix[i] = self.matrix[i] + [OBJECT.AIR.value] * n
+                if i == len(self.matrix) - 1:
+                    self.matrix[i] = [OBJECT.ROCK.value] * n + self.matrix[i]
+                else:
+                    self.matrix[i] = self.matrix[i] + [OBJECT.AIR.value] * n
             self.debug()
         # if invalid position return None
         rel_coords = self.normalize_cords(absolute_coords) # (X, Y)
