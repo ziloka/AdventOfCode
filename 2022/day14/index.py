@@ -1,3 +1,5 @@
+# https://www.reddit.com/r/adventofcode/comments/zlu722/2022_day_14_part_2_i_optimized_my_code_to_run/
+
 import time
 from enum import Enum
 import math

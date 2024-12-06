@@ -17,9 +17,6 @@ def solve(grid, *start):
             if ord(b) > ord(a) + 1: continue
             visited.add((ni, nj))
             Q.append((ni, nj, d + 1, b))
-            print(Q)
-            # print("".join(grid))
-        print("done")
 
-grid = open("example.txt").readlines()
+grid = open("input.txt").readlines()
 print(solve(grid, 'S'), solve(grid, 'S', 'a'))
