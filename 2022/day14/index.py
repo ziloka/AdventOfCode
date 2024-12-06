@@ -1,3 +1,4 @@
+import time
 from enum import Enum
 import math
 
@@ -104,10 +105,8 @@ class Waterfall:
         return counter
 
     def part2_matrix_get(self, absolute_coords):
-        # expand the matrix, horizontally
-        # check if matrix needs to be expanded leftwards or rightwards
+        # expand the matrix, horizontally, check if matrix needs to be expanded leftwards or rightwards
         if absolute_coords[0] < self.offset_x:
-            # print("expanding leftwards")
             n = self.offset_x - absolute_coords[0]
             self.offset_x = absolute_coords[0]
             # add n columns to each row starting on the left and going to the left
@@ -116,9 +115,7 @@ class Waterfall:
                     self.matrix[i] = [OBJECT.ROCK.value] * n + self.matrix[i]
                 else: 
                     self.matrix[i] = [OBJECT.AIR.value] * n + self.matrix[i]
-            # self.debug()
         elif absolute_coords[0] >= self.max_x:
-            # print("expanding rightwards")
             # add n columns to each row starting on the right and going to the right
             n = absolute_coords[0] - self.max_x + 1
             self.max_x = absolute_coords[0] + 1
@@ -127,25 +124,18 @@ class Waterfall:
                     self.matrix[i] = [OBJECT.ROCK.value] * n + self.matrix[i]
                 else:
                     self.matrix[i] = self.matrix[i] + [OBJECT.AIR.value] * n
-            # self.debug()
         # if invalid position return None
         rel_coords = self.normalize_cords(absolute_coords) # (X, Y)
         if 0 <= rel_coords[1] < len(self.matrix):
             return self.matrix[rel_coords[1]][rel_coords[0]]
 
+    # this is the slow section
     def part2_sand_unit_movement_helper(self, abs_sand_unit):
         while abs_sand_unit[1] < self.max_y and self.part2_matrix_get((abs_sand_unit[0], abs_sand_unit[1]+1)) == OBJECT.AIR.value:
             abs_sand_unit[1] += 1
 
-        # not free falling
-        # try moving one step down to the right
-        # self.matrix[1][10] == OBJECT.SAND.value
-        # print("stuck", self.normalize_cords(abs_sand_unit), self.max_x, self.offset_x)
-        # self.debug()
-        if self.part2_matrix_get((abs_sand_unit[0]+1, abs_sand_unit[1]+1)) == None or self.part2_matrix_get((abs_sand_unit[0]-1, abs_sand_unit[1]+1)) == None:
-            print("part 2 out of bounds")
-            return None
-        elif self.part2_matrix_get((abs_sand_unit[0]-1, abs_sand_unit[1]+1)) == OBJECT.AIR.value:
+        # not free falling, try moving one step down to the right
+        if self.part2_matrix_get((abs_sand_unit[0]-1, abs_sand_unit[1]+1)) == OBJECT.AIR.value:
             abs_sand_unit[1] += 1
             abs_sand_unit[0] -= 1
         elif self.part2_matrix_get((abs_sand_unit[0]+1, abs_sand_unit[1]+1)) == OBJECT.AIR.value: 
@@ -170,11 +160,9 @@ class Waterfall:
                 break
             self.matrix_set(new_abs_sand_unit, OBJECT.SAND.value)
             counter += 1
-            # self.debug()
         return counter
 
 waterfall = Waterfall("input.txt")
-# waterfall = Waterfall()
-
 print(f"part 1: {waterfall.part1_start_sand()}")
-print(f"part 2: {waterfall.part2_start_sand()}")
+start = time.time()
+print(f"part 2: {waterfall.part2_start_sand()} took: {time.time() - start:.2f}s")
