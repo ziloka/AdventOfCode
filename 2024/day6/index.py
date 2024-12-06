@@ -27,58 +27,79 @@ class Map():
             print("".join(line))
         print()
 
+    def is_valid_pos(self, coords):
+        return 0 <= coords[0] < len(self.matrix) and 0 <= coords[1] < len(self.matrix[0])
+
     def get_element(self, coords):
+        if not self.is_valid_pos(coords):
+            return None
         return self.matrix[coords[0]][coords[1]]
     
     def set_element(self, coords, value):
         self.matrix[coords[0]][coords[1]] = value
 
     def execute_protocol(self):
+        positions = []
         guard = self.get_element(self.guard_pos)
-        if guard == GUARD.LEFT.value and self.get_element([self.guard_pos[0]-1, self.guard_pos[1]]) != OBJECT.OBSTRUCTION.value:
+        if guard == GUARD.UP.value and self.get_element([self.guard_pos[0]-1, self.guard_pos[1]]) != OBJECT.OBSTRUCTION.value:
             while self.get_element([self.guard_pos[0]-1, self.guard_pos[1]]) != OBJECT.OBSTRUCTION.value:
-                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = OBJECT.EMPTY.value
+                self.set_element(self.guard_pos, OBJECT.EMPTY.value)
                 self.guard_pos[0] -= 1
-                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.LEFT.value
-        elif guard == GUARD.RIGHT.value and self.get_element([self.guard_pos[0]+1, self.guard_pos[1]]) != OBJECT.OBSTRUCTION.value:
-            while self.get_element([self.guard_pos[0]+1, self.guard_pos[1]]) != OBJECT.OBSTRUCTION.value:
-                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = OBJECT.EMPTY.value
-                self.guard_pos[0] += 1
-                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.RIGHT.value
-        elif guard == GUARD.UP.value and self.get_element([self.guard_pos[0], self.guard_pos[1]-1]) != OBJECT.OBSTRUCTION.value:
-            while self.get_element([self.guard_pos[0], self.guard_pos[1]-1]) != OBJECT.OBSTRUCTION.value:
-                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = OBJECT.EMPTY.value
-                self.guard_pos[1] -= 1
+                positions.append(self.guard_pos.copy())
+                if not self.is_valid_pos(self.guard_pos):
+                    return None
                 self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.UP.value
-        elif guard == GUARD.DOWN.value and self.get_element([self.guard_pos[0], self.guard_pos[1]+1]) != OBJECT.OBSTRUCTION.value:
-            while self.get_element([self.guard_pos[0], self.guard_pos[1]+1]) != OBJECT.OBSTRUCTION.value:
-                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = OBJECT.EMPTY.value
-                self.guard_pos[1] += 1
+        elif guard == GUARD.DOWN.value and self.get_element([self.guard_pos[0]+1, self.guard_pos[1]]) != OBJECT.OBSTRUCTION.value:
+            while self.get_element([self.guard_pos[0]+1, self.guard_pos[1]]) != OBJECT.OBSTRUCTION.value:
+                self.set_element(self.guard_pos, OBJECT.EMPTY.value)
+                self.guard_pos[0] += 1
+                positions.append(self.guard_pos.copy())
+                if not self.is_valid_pos(self.guard_pos):
+                    return None
                 self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.DOWN.value
-        # there is sitting in front of obstruction thing
+        elif guard == GUARD.LEFT.value and self.get_element([self.guard_pos[0], self.guard_pos[1]-1]) != OBJECT.OBSTRUCTION.value:
+            while self.get_element([self.guard_pos[0], self.guard_pos[1]-1]) != OBJECT.OBSTRUCTION.value:
+                self.set_element(self.guard_pos, OBJECT.EMPTY.value)
+                self.guard_pos[1] -= 1
+                positions.append(self.guard_pos.copy())
+                if not self.is_valid_pos(self.guard_pos):
+                    return None
+                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.LEFT.value
+        elif guard == GUARD.RIGHT.value and self.get_element([self.guard_pos[0], self.guard_pos[1]+1]) != OBJECT.OBSTRUCTION.value:
+            while self.get_element([self.guard_pos[0], self.guard_pos[1]+1]) != OBJECT.OBSTRUCTION.value:
+                self.set_element(self.guard_pos, OBJECT.EMPTY.value)
+                self.guard_pos[1] += 1
+                positions.append(self.guard_pos.copy())
+                if not self.is_valid_pos(self.guard_pos):
+                    return None
+                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.RIGHT.value
+
+        # guard in front of obstruction
         match guard:
             case GUARD.LEFT.value:
-                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.DOWN.value
-            case GUARD.RIGHT.value:
                 self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.UP.value
             case GUARD.UP.value:
-                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.LEFT.value
-            case GUARD.DOWN.value:
                 self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.RIGHT.value
-            # case _:
-                # print('what am i suppose to do now')
-                # self.debug()
+            case GUARD.RIGHT.value:
+                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.DOWN.value
+            case GUARD.DOWN.value:
+                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.LEFT.value
+            case _:
+                raise Exception("invalid guard")
+        return positions
+        
     def part1(self):
         distinct_positions = set()
-        finished_complete_cycle = False
-        while not finished_complete_cycle:
-            self.execute_protocol()
-            pos_str = f"{self.guard_pos[0]}_{self.guard_pos[1]}"
-            if pos_str not in distinct_positions:
-                distinct_positions.add(pos_str)
-            print(len(distinct_positions))
+        while True:
+            positions = self.execute_protocol()
+            if positions == None:
+                break
+            print(positions)
+            for pos in positions:
+                distinct_positions.add(f"{pos[0]}_{pos[1]}")
+        return len(distinct_positions)
 
 map = Map()
 # map.debug()
-map.part1()
+print(f"part 1: {map.part1()}")
 # print(matrix)
