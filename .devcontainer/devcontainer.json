@@ -19,8 +19,7 @@
 			// Add the IDs of extensions you want installed when the container is created.
 			"extensions": [
 				"dbaeumer.vscode-eslint",
-				"ms-python.python",
-				"waderyan.nodejs-extension-pack"
+				"ms-python.python"
 			]
 		}
 	},

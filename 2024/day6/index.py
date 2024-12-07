@@ -2,48 +2,35 @@ import time
 from enum import Enum
 
 class GUARD(Enum):
-    UP = "^"
-    RIGHT = ">"
-    DOWN = "v"
-    LEFT = "<"
+    UP = 0
+    RIGHT = 1
+    DOWN = 2
+    LEFT = 3
 
 class MOVEMENT:
     # assume guard is initially facing up
     def __init__(self, coords):
+        self.num_guards = len(GUARD)
         self.coords = coords
-        self.direction = GUARD.UP
+        self.direction = GUARD.UP.value
 
     def forward(self):
         x, y = self.coords
         match self.direction:
-            case GUARD.UP:
+            case GUARD.UP.value:
                 return [x - 1, y]
-            case GUARD.RIGHT:
+            case GUARD.RIGHT.value:
                 return [x, y + 1]
-            case GUARD.DOWN:
+            case GUARD.DOWN.value:
                 return [x + 1, y]
-            case GUARD.LEFT:
+            case GUARD.LEFT.value:
                 return [x, y - 1]
             case _:
-                raise Exception(f"unexpected guard got: {self.direction}, expected {', '.join(map(lambda e: e, GUARD))}")
+                raise Exception(f"unexpected guard got: {self.direction}, expected {', '.join(map(lambda e: str(e.value), GUARD))}")
 
     # follow strict protocol, ONLY rotate clockwise in front of obstruction
     def turn(self):
-        match self.direction:
-            case GUARD.UP:
-                return GUARD.RIGHT
-            case GUARD.RIGHT:
-                return GUARD.DOWN
-            case GUARD.DOWN:
-                return GUARD.LEFT
-            case GUARD.LEFT:
-                return GUARD.UP
-            case _:
-                raise Exception(f"unexpected guard got: {self.direction}, expected {', '.join(map(lambda e: e, GUARD))}")
-
-class OBJECT(Enum):
-    OBSTRUCTION = "#"
-    EMPTY = "."
+        return (self.direction + 1) % self.num_guards
 
 class PatrolRoute():
     def __init__(self, filename="example.txt"):
@@ -57,9 +44,9 @@ class PatrolRoute():
         for i, row in enumerate(rows):
             elements = list(row)
             for j, e in enumerate(elements):
-                if e in [direction.value for direction in GUARD]: 
+                if e == "^": 
                     self.guard = MOVEMENT([i, j])
-                elif e == OBJECT.OBSTRUCTION.value:
+                elif e == "#":
                     self.obstacles.add((i, j))
                 self.valid_positions.add((i, j))
         self.init_guard_pos = (tuple(self.guard.coords), self.guard.direction)
