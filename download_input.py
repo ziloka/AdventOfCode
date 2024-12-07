@@ -15,10 +15,16 @@ import os
 try:
     from aocd.models import Puzzle
 except ImportError:
-    pypi_url = "https://pypi.org/project/advent-of-code-data/"
-    print(f"Install {pypi_url} to autodownload input files")
+    print(f"Run `pip install advent-of-code-data` to autodownload input files")
     raise SystemExit()
 
+try:
+    from dotenv import load_dotenv
+except ImportError:
+    print(f"Run `pip install python-dotenv` to load variables from .env")
+    raise SystemExit()
+
+load_dotenv()
 
 def download(year, day):
     """Get input and write it to input.txt inside the puzzle folder"""

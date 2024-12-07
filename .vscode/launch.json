@@ -14,7 +14,7 @@
       "cwd": "${fileDirname}",
       "justMyCode": true,
       "env": {
-        "AOC_SESSION": "SESSION_ID"
+        
       }
     },
     {
