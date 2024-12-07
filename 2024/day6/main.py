@@ -1,9 +1,8 @@
 # https://discord.com/channels/172018499005317120/1314464752990289920/1314551250804805684
 import time
 
-data = open("example.txt").read()
+data = open("input.txt").read()
 grid = {y+1j*x:v for y,r in enumerate(data.splitlines())for x,v in enumerate(r)}
-print(grid)
 start = [x for x in grid if grid[x]=="^"][0]
 
 def walk(grid):

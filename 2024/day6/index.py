@@ -15,16 +15,16 @@ class MOVEMENT:
         self.direction = GUARD.UP.value
 
     def forward(self):
-        x, y = self.coords
+        r, c = self.coords
         match self.direction:
             case GUARD.UP.value:
-                return [x - 1, y]
+                return [r - 1, c]
             case GUARD.RIGHT.value:
-                return [x, y + 1]
+                return [r, c + 1]
             case GUARD.DOWN.value:
-                return [x + 1, y]
+                return [r + 1, c]
             case GUARD.LEFT.value:
-                return [x, y - 1]
+                return [r, c - 1]
             case _:
                 raise Exception(f"unexpected guard got: {self.direction}, expected {', '.join(map(lambda e: str(e.value), GUARD))}")
 

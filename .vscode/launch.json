@@ -9,11 +9,16 @@
       "type": "debugpy",
       "request": "launch",
       "program": "${file}",
+      "python": "${command:python.interpreterPath}",
       "console": "integratedTerminal",
       "cwd": "${fileDirname}",
+      "justMyCode": true,
+      "env": {
+        "AOC_SESSION": "${env:AOC_SESSION}"
+      }
     },
     {
-      "type": "pwa-node",
+      "type": "node",
       "request": "launch",
       "name": "Launch Program",
       "skipFiles": [
