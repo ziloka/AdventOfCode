@@ -115,7 +115,7 @@ class PatrolRoute():
                 positions.append(self.guard_pos.copy())
                 self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.RIGHT.value
 
-                for colIdx in range(0, self.guard_pos[1]):
+                for colIdx in range(self.guard_pos[1], len(self.matrix)):
                     if self.get_element([self.guard_pos[0], colIdx]) == OBJECT.OBSTRUCTION.value:
                         obstacles.append([self.guard_pos[0], self.guard_pos[1]+1])
         return (positions, obstacles)
@@ -174,13 +174,12 @@ class PatrolRoute():
                     continue
 
                 self.init(self.filename)
-                self.matrix[x][y] = "O"
+                # self.matrix[x][y] = "O"
+                # self.debug(self.matrix)
                 self.matrix[x][y] = OBJECT.OBSTRUCTION.value
                 history_positions = []
                 while True:
                     positions = self.inf_loop_helper()
-                    # if guard goes on the same path twice, it is an inf loop
-                    # so chop list in half and compare first half to second half
                     history_positions.append(positions)
                     if len(positions) == 0 or positions[-1] == None:
                         break
@@ -194,10 +193,13 @@ class PatrolRoute():
                                 string += group + "}, "
                             return string
 
-                        print(positions)
                         # check if last n positions are the same
                         for j in range(1, len(history_positions)//2):
+                            # if guard goes on the same path twice, it is an inf loop
+                            # so chop list in half and compare first half to second half
                             if stringify(history_positions[-j:]) == stringify(history_positions[2 * -j:-j]):
+                                # self.matrix[x][y] = "O"
+                                # self.debug(self.matrix)
                                 obstacles.append([x, y])
                                 break
                         else:
@@ -206,7 +208,7 @@ class PatrolRoute():
 
         return len(distinct_positions), len(obstacles)
 
-patrol_route = PatrolRoute("example.txt")
+patrol_route = PatrolRoute("input.txt")
 p1, p2 = patrol_route.driver_code()
 print(f"part 1: {p1}")
 print(f"part 2: {p2}")
