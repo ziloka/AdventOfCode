@@ -1,31 +1,27 @@
-import inspect
 from enum import Enum
 
-# https://stackoverflow.com/a/19300424
 class GUARD(Enum):
-    def __new__(cls, *args, **kwds):
-          value = len(cls.__members__) + 1
-          obj = object.__new__(cls)
-          obj._value_ = value
-          return obj
-    def __init__(self, a, b):
-        self.num = a
-        self.char = b
+    UP = "^"
+    RIGHT = ">"
+    DOWN = "v"
+    LEFT = "<"
 
-    UP = 1, "^",
-    RIGHT = 2, ">",
-    DOWN = 3, "v"
-    LEFT = 4, "<"
+class ROTATION(Enum):
+    UP = 1
+    RIGHT = 2
+    DOWN = 3
+    LEFT = 4
 
 class OBJECT(Enum):
     OBSTRUCTION = "#"
     EMPTY = "."
 
-class Map():
+class PatrolRoute():
     def __init__(self, filename="example.txt"):
         self.init(filename)
     
     def init(self, filename):
+        self.filename = filename
         self.matrix = []
         self.visual = []
         rows = open(filename).read().split("\n")
@@ -56,66 +52,111 @@ class Map():
     def set_visual_element(self, coords, value):
         self.visual[coords[0]][coords[1]] = value
 
-    def execute_protocol(self):
+    # if last position is None, end of path, end program
+    def forward(self):
         positions = []
+        obstacles = []
         guard = self.get_element(self.guard_pos)
-        if guard == GUARD.UP.char and self.get_element([self.guard_pos[0]-1, self.guard_pos[1]]) != OBJECT.OBSTRUCTION.value:
+        # go forward
+        if guard == GUARD.UP.value and self.get_element([self.guard_pos[0]-1, self.guard_pos[1]]) != OBJECT.OBSTRUCTION.value:
             while self.get_element([self.guard_pos[0]-1, self.guard_pos[1]]) != OBJECT.OBSTRUCTION.value:
                 self.set_element(self.guard_pos, OBJECT.EMPTY.value)
-                self.set_visual_element(self.guard_pos, "X")
+                self.set_visual_element(self.guard_pos, "|")
                 self.guard_pos[0] -= 1
+
                 if not self.is_valid_pos(self.guard_pos):
-                    return [*positions, None]
+                    return ([*positions, None], obstacles)
                 positions.append(self.guard_pos.copy())
-                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.UP.char
-        elif guard == GUARD.DOWN.char and self.get_element([self.guard_pos[0]+1, self.guard_pos[1]]) != OBJECT.OBSTRUCTION.value:
+                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.UP.value
+
+                # check if placing obstruction in front of guard will make inf loop
+                for colIdx in range(self.guard_pos[1], len(self.matrix[0])):
+                    if self.get_element([self.guard_pos[0], colIdx]) == OBJECT.OBSTRUCTION.value:
+                        obstacles.append([self.guard_pos[0]-1, self.guard_pos[1]])
+        elif guard == GUARD.DOWN.value and self.get_element([self.guard_pos[0]+1, self.guard_pos[1]]) != OBJECT.OBSTRUCTION.value:
             while self.get_element([self.guard_pos[0]+1, self.guard_pos[1]]) != OBJECT.OBSTRUCTION.value:
                 self.set_element(self.guard_pos, OBJECT.EMPTY.value)
-                self.set_visual_element(self.guard_pos, "X")
+                self.set_visual_element(self.guard_pos, "|")
                 self.guard_pos[0] += 1
+
                 if not self.is_valid_pos(self.guard_pos):
-                    return [*positions, None]
+                    return ([*positions, None], obstacles)
                 positions.append(self.guard_pos.copy())
-                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.DOWN.char
-        elif guard == GUARD.LEFT.char and self.get_element([self.guard_pos[0], self.guard_pos[1]-1]) != OBJECT.OBSTRUCTION.value:
+                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.DOWN.value
+
+                # check if placing obstruction in front of guard will make inf loop
+                for colIdx in range(0, self.guard_pos[1]):
+                    if self.get_element([self.guard_pos[0], colIdx]) == OBJECT.OBSTRUCTION.value:
+                        obstacles.append([self.guard_pos[0]+1, self.guard_pos[1]])
+
+        elif guard == GUARD.LEFT.value and self.get_element([self.guard_pos[0], self.guard_pos[1]-1]) != OBJECT.OBSTRUCTION.value:
             while self.get_element([self.guard_pos[0], self.guard_pos[1]-1]) != OBJECT.OBSTRUCTION.value:
                 self.set_element(self.guard_pos, OBJECT.EMPTY.value)
-                self.set_visual_element(self.guard_pos, "X")
+                self.set_visual_element(self.guard_pos, "-")
                 self.guard_pos[1] -= 1
+
                 if not self.is_valid_pos(self.guard_pos):
-                    return [*positions, None]
+                    return ([*positions, None], obstacles)
                 positions.append(self.guard_pos.copy())
-                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.LEFT.char
-        elif guard == GUARD.RIGHT.char and self.get_element([self.guard_pos[0], self.guard_pos[1]+1]) != OBJECT.OBSTRUCTION.value:
+                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.LEFT.value
+
+                # check if placing obstruction in front of guard will make inf loop
+                for rowIdx in range(0, self.guard_pos[0]):
+                    if self.get_element([rowIdx, self.guard_pos[0]]) == OBJECT.OBSTRUCTION.value:
+                        obstacles.append([self.guard_pos[0], self.guard_pos[1]-1])
+        elif guard == GUARD.RIGHT.value and self.get_element([self.guard_pos[0], self.guard_pos[1]+1]) != OBJECT.OBSTRUCTION.value:
             while self.get_element([self.guard_pos[0], self.guard_pos[1]+1]) != OBJECT.OBSTRUCTION.value:
                 self.set_element(self.guard_pos, OBJECT.EMPTY.value)
-                self.set_visual_element(self.guard_pos, "X")
+                self.set_visual_element(self.guard_pos, "-")
                 self.guard_pos[1] += 1
-                if not self.is_valid_pos(self.guard_pos):
-                    return [*positions, None]
-                positions.append(self.guard_pos.copy())
-                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.RIGHT.char
 
-        # guard in front of obstruction
+                if not self.is_valid_pos(self.guard_pos):
+                    return ([*positions, None], obstacles)
+                positions.append(self.guard_pos.copy())
+                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.RIGHT.value
+
+                for colIdx in range(0, self.guard_pos[1]):
+                    if self.get_element([self.guard_pos[0], colIdx]) == OBJECT.OBSTRUCTION.value:
+                        obstacles.append([self.guard_pos[0], self.guard_pos[1]+1])
+        return (positions, obstacles)
+    
+    # follow strict protocol, ONLY rotate clockwise in front of obstruction
+    def turn(self):
+        guard = self.get_element(self.guard_pos)
         match guard:
-            case GUARD.LEFT.char:
-                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.UP.char
-            case GUARD.UP.char:
-                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.RIGHT.char
-            case GUARD.RIGHT.char:
-                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.DOWN.char
-            case GUARD.DOWN.char:
-                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.LEFT.char
+            case GUARD.LEFT.value:
+                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.UP.value
+            case GUARD.UP.value:
+                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.RIGHT.value
+            case GUARD.RIGHT.value:
+                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.DOWN.value
+            case GUARD.DOWN.value:
+                self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.LEFT.value
             case _:
-                raise Exception("invalid guard")
+                raise Exception(f"unexpected guard got: {guard}, expected {', '.join(map(lambda e: e.value, GUARD))}")
+
+    def execute_protocol(self):
+        positions, obstacles = self.forward()
+        if positions[-1] == None:
+            return positions, obstacles
+        self.turn()
+        return positions, obstacles
+    
+    def inf_loop_helper(self):
+        positions, _ = self.forward()
+        if len(positions) == 0 or positions[-1] == None:
+            return positions
+        self.turn()
         return positions
         
-    def part1(self):
+    def driver_code(self):
         debug_positions = []
+        obstacles_candidates = []
         distinct_positions = set()
         # https://stackoverflow.com/a/654002
         while True:
-            positions = self.execute_protocol()
+            positions, road_blocks = self.execute_protocol()
+            obstacles_candidates.append(road_blocks)
             for pos in positions:
                 if pos == None:
                     break
@@ -125,27 +166,42 @@ class Map():
             else:
                 continue
             break
-    
-        return len(distinct_positions)
+        # self.debug(self.matrix)
 
-    def inf_loops(self, positions):
-        # if guard goes on the same path twice, it is an inf loop
-        # if guard makes three direction turns, try placing an obstruction to create inf loop
-        POSSIBLITIES = [
-            [GUARD.UP.value, GUARD.LEFT.value, GUARD.RIGHT.value],
-            [GUARD.LEFT.value, GUARD.RIGHT.value],
-            [GUARD.UP.value, GUARD.LEFT.value],
-            [GUARD.DOWN.value, GUARD.RIGHT.value]
-        ]
-        
-        pass
+        obstacles = []
+        for road_block in obstacles_candidates:
+            for i, (x, y) in enumerate(road_block):
+                self.init(self.filename)
+                self.matrix[x][y] = "O"
+                self.debug(self.matrix)
+                self.matrix[x][y] = OBJECT.OBSTRUCTION.value
+                history_positions = []
+                while True:
+                    print(i)
+                    positions = self.inf_loop_helper()
+                    # if guard goes on the same path twice, it is an inf loop
+                    # so chop list in half and compare first half to second half
+                    history_positions.append(positions)
+                    if len(positions) == 0 or positions[-1] == None:
+                        break
 
-    def part2(self):
-        self.init()
+                    def stringify(history):
+                        string = ""
+                        for historical_pos in history:
+                            for x, y in historical_pos:
+                                string += f"{x}_{y}, "
+                        return string
 
+                    first_half = stringify(history_positions[:len(history_positions)//2])
+                    second_half = stringify(history_positions[len(history_positions)//2:])
+                    if first_half == second_half:
+                        obstacles.append([x, y])
+                        break
 
-map = Map("input.txt")
-# map.debug()
-print(GUARD.UP.char)
-print(f"part 1: {map.part1()}")
+        return len(distinct_positions), len(obstacles)
+
+patrol_route = PatrolRoute("example.txt")
+p1, p2 = patrol_route.driver_code()
+print(f"part 1: {p1}")
+print(f"part 2: {p2}")
 # print(matrix)
