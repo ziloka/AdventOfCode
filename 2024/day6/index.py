@@ -170,6 +170,9 @@ class PatrolRoute():
         obstacles = []
         for road_block in obstacles_candidates:
             for i, (x, y) in enumerate(road_block):
+                if not self.is_valid_pos([x, y]):
+                    continue
+
                 self.init(self.filename)
                 self.matrix[x][y] = "O"
                 self.matrix[x][y] = OBJECT.OBSTRUCTION.value
