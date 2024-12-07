@@ -25,11 +25,14 @@ class PatrolRoute():
         self.filename = filename
         self.matrix = []
         rows = open(filename).read().split("\n")
+        self.obstacles = set()
         for i, row in enumerate(rows):
             elements = list(row)
             for j, e in enumerate(elements):
                 if e in [e.value for e in GUARD]: 
                     self.guard_pos = [i, j]
+                elif e == OBJECT.OBSTRUCTION.value:
+                    self.obstacles.add((i, j))
             # self.obstacles[i] = [e == OBJECT.OBSTRUCTION.value for e in elements]
             self.matrix.append(elements)
         self.init_guard_pos = (tuple(self.guard_pos), self.get_element(self.guard_pos))
@@ -218,7 +221,7 @@ print(f"part 1: {p1}")
 # ...#
 # ....
 # .^#.
-print(f"part 2: {p2}") # 1681, actual is 1793
+print(f"part 2: {p2}") # got 1681, actual is 1793
 # print(matrix)
 print(f"runtime: {time.time() - start:.2f}s")
 

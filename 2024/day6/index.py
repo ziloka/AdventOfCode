@@ -23,13 +23,13 @@ class PatrolRoute():
     def init(self, filename):
         self.filename = filename
         self.matrix = []
+        
         rows = open(filename).read().split("\n")
         for i, row in enumerate(rows):
             elements = list(row)
             for j, e in enumerate(elements):
                 if e in [e.value for e in GUARD]: 
-                    self.guard_pos = [i, j] 
-            self.matrix.append(elements)
+                    self.guard_pos = [i, j]
 
     def debug(self, table):
         for line in table:

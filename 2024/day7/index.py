@@ -1,30 +1,51 @@
+import time
 import itertools
 
-calibration_equations = open("input.txt").read().split("\n")
-
-def solve(equations):
-    part1 = 0
+def part1(equations):
+    total_calibration_result = 0
     for equation in equations:
         testValue, remaining_nums = equation.split(":")
         nums = [*map(int, remaining_nums.strip().split(" "))]
         # I dont want permutations, or permutations with replacement, but a Cartesian product
         ops_combos = itertools.product(["+", "*"], repeat=len(nums)-1)
-        value = nums[0]
+        result = nums[0]
         for ops in ops_combos:
             for i in range(len(ops)):
                 if ops[i] == "+":
-                    value += nums[i+1]
+                    result += nums[i+1]
                 elif ops[i] == "*":
-                    value *= nums[i+1]
-            if value == int(testValue):
-                part1 += int(testValue)
+                    result *= nums[i+1]
+            if result == int(testValue):
+                total_calibration_result += int(testValue)
                 break
             else:
-                value = nums[0]
-    return part1
+                result = nums[0]
+    return total_calibration_result
 
-# print(solve([
-#     '292: 11 6 16 20'
-# ]))
-print(f"part 1: {solve(calibration_equations)}")
+def part2(equations):
+    total_calibration_result = 0
+    for equation in equations:
+        testValue, remaining_nums = equation.split(":")
+        nums = [*map(int, remaining_nums.strip().split(" "))]
+        # I dont want permutations, or permutations with replacement, but a Cartesian product
+        ops_combos = itertools.product(["+", "*", "||"], repeat=len(nums)-1)
+        result = nums[0]
+        for ops in ops_combos:
+            for i in range(len(ops)):
+                if ops[i] == "+":
+                    result += nums[i+1]
+                elif ops[i] == "*":
+                    result *= nums[i+1]
+                elif ops[i] == "||":
+                    result = int(str(result) + str(nums[i+1]))
+            if result == int(testValue):
+                total_calibration_result += int(testValue)
+                break
+            else:
+                result = nums[0]
+    return total_calibration_result
+
+calibration_equations = open("input.txt").read().split("\n")
+print(f"part 1: {part1(calibration_equations)}")
+print(f"part 2: {part2(calibration_equations)}")
         
