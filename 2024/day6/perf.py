@@ -1,3 +1,4 @@
+import time
 from enum import Enum
 
 class GUARD(Enum):
@@ -28,8 +29,10 @@ class PatrolRoute():
             elements = list(row)
             for j, e in enumerate(elements):
                 if e in [e.value for e in GUARD]: 
-                    self.guard_pos = [i, j] 
+                    self.guard_pos = [i, j]
+            # self.obstacles[i] = [e == OBJECT.OBSTRUCTION.value for e in elements]
             self.matrix.append(elements)
+        self.init_guard_pos = (tuple(self.guard_pos), self.get_element(self.guard_pos))
 
     def debug(self, table):
         for line in table:
@@ -50,7 +53,7 @@ class PatrolRoute():
     # if last position is None, end of path, end program
     def forward(self):
         positions = []
-        obstacles = []
+        candidate_obstacles = []
         guard = self.get_element(self.guard_pos)
         # go forward
         if guard == GUARD.UP.value and self.get_element([self.guard_pos[0]-1, self.guard_pos[1]]) != OBJECT.OBSTRUCTION.value:
@@ -59,28 +62,34 @@ class PatrolRoute():
                 self.guard_pos[0] -= 1
 
                 if not self.is_valid_pos(self.guard_pos):
-                    return ([*positions, None], obstacles)
-                positions.append(self.guard_pos.copy())
+                    return ([*positions, None], candidate_obstacles)
+                positions.append(tuple(self.guard_pos.copy()))
                 self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.UP.value
 
                 # check if placing obstruction in front of guard will make inf loop
+
+                # same element, checked 19 times for a 10x10 matrix
                 for colIdx in range(self.guard_pos[1], len(self.matrix[0])):
                     if self.get_element([self.guard_pos[0], colIdx]) == OBJECT.OBSTRUCTION.value:
-                        obstacles.append([self.guard_pos[0]-1, self.guard_pos[1]])
+                        # print([self.guard_pos[0]-1, self.guard_pos[1]])
+                        candidate_obstacles.append([self.guard_pos[0]-1, self.guard_pos[1]])
+                        break
         elif guard == GUARD.DOWN.value and self.get_element([self.guard_pos[0]+1, self.guard_pos[1]]) != OBJECT.OBSTRUCTION.value:
             while self.get_element([self.guard_pos[0]+1, self.guard_pos[1]]) != OBJECT.OBSTRUCTION.value:
                 self.set_element(self.guard_pos, OBJECT.EMPTY.value)
                 self.guard_pos[0] += 1
 
                 if not self.is_valid_pos(self.guard_pos):
-                    return ([*positions, None], obstacles)
-                positions.append(self.guard_pos.copy())
+                    return ([*positions, None], candidate_obstacles)
+                positions.append(tuple(self.guard_pos.copy()))
                 self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.DOWN.value
 
                 # check if placing obstruction in front of guard will make inf loop
                 for colIdx in range(0, self.guard_pos[1]):
                     if self.get_element([self.guard_pos[0], colIdx]) == OBJECT.OBSTRUCTION.value:
-                        obstacles.append([self.guard_pos[0]+1, self.guard_pos[1]])
+                        # print([self.guard_pos[0]+1, self.guard_pos[1]])
+                        candidate_obstacles.append([self.guard_pos[0]+1, self.guard_pos[1]])
+                        break
 
         elif guard == GUARD.LEFT.value and self.get_element([self.guard_pos[0], self.guard_pos[1]-1]) != OBJECT.OBSTRUCTION.value:
             while self.get_element([self.guard_pos[0], self.guard_pos[1]-1]) != OBJECT.OBSTRUCTION.value:
@@ -88,28 +97,32 @@ class PatrolRoute():
                 self.guard_pos[1] -= 1
 
                 if not self.is_valid_pos(self.guard_pos):
-                    return ([*positions, None], obstacles)
-                positions.append(self.guard_pos.copy())
+                    return ([*positions, None], candidate_obstacles)
+                positions.append(tuple(self.guard_pos.copy()))
                 self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.LEFT.value
 
                 # check if placing obstruction in front of guard will make inf loop
                 for rowIdx in range(0, self.guard_pos[0]):
                     if self.get_element([rowIdx, self.guard_pos[0]]) == OBJECT.OBSTRUCTION.value:
-                        obstacles.append([self.guard_pos[0], self.guard_pos[1]-1])
+                        # print([self.guard_pos[0], self.guard_pos[1]-1])
+                        candidate_obstacles.append([self.guard_pos[0], self.guard_pos[1]-1])
+                        break
         elif guard == GUARD.RIGHT.value and self.get_element([self.guard_pos[0], self.guard_pos[1]+1]) != OBJECT.OBSTRUCTION.value:
             while self.get_element([self.guard_pos[0], self.guard_pos[1]+1]) != OBJECT.OBSTRUCTION.value:
                 self.set_element(self.guard_pos, OBJECT.EMPTY.value)
                 self.guard_pos[1] += 1
 
                 if not self.is_valid_pos(self.guard_pos):
-                    return ([*positions, None], obstacles)
-                positions.append(self.guard_pos.copy())
+                    return ([*positions, None], candidate_obstacles)
+                positions.append(tuple(self.guard_pos.copy()))
                 self.matrix[self.guard_pos[0]][self.guard_pos[1]] = GUARD.RIGHT.value
 
                 for colIdx in range(self.guard_pos[1], len(self.matrix)):
                     if self.get_element([self.guard_pos[0], colIdx]) == OBJECT.OBSTRUCTION.value:
-                        obstacles.append([self.guard_pos[0], self.guard_pos[1]+1])
-        return (positions, obstacles)
+                        # print([self.guard_pos[0], self.guard_pos[1]+1])
+                        candidate_obstacles.append([self.guard_pos[0], self.guard_pos[1]+1])
+                        break
+        return (tuple(positions), candidate_obstacles)
     
     # follow strict protocol, ONLY rotate clockwise in front of obstruction
     def turn(self):
@@ -163,10 +176,12 @@ class PatrolRoute():
             for i, (x, y) in enumerate(road_block):
                 if not self.is_valid_pos([x, y]):
                     continue
+                self.guard_pos = list(self.init_guard_pos[0])
+                self.set_element(self.init_guard_pos[0], self.init_guard_pos[1])
 
-                self.init(self.filename)
-                # self.matrix[x][y] = "O"
-                # self.debug(self.matrix)
+                # remove the last obstruction
+                if i > 0:
+                    self.matrix[road_block[i-1][0]][road_block[i-1][1]] = OBJECT.EMPTY.value
                 self.matrix[x][y] = OBJECT.OBSTRUCTION.value
                 history_positions = []
                 while True:
@@ -175,24 +190,16 @@ class PatrolRoute():
                     if len(positions) == 0 or positions[-1] == None:
                         break
                     else:
-                        def stringify(history):
-                            string = ""
-                            for historical_pos in history:
-                                group = ", {"
-                                for x, y in historical_pos:
-                                    group += f"{x}_{y}, "
-                                string += group + "}, "
-                            return string
-
                         # check if last n positions are the same
                         for j in range(1, len(history_positions)//2):
                             # if guard goes on the same path twice, it is an inf loop
-                            # so chop list in half and compare first half to second half
-                            if stringify(history_positions[-j:]) == stringify(history_positions[2*-j:-j]):
+                            # so compare last n, with last n - 2n, and then compare first half to second half
+                            # but this is vulnerable to hash collisions
+                            if  hash(tuple(history_positions[-j:])) ==  hash(tuple(history_positions[2*-j:-j])):
                                 # self.matrix[x][y] = "O"
                                 # self.debug(self.matrix)
-                                print(f"added a {len(obstacles)}th obstacle")
                                 obstacles.append([x, y])
+                                print(f"now {len(obstacles)} obstacles")
                                 break
                         else:
                             continue
@@ -200,14 +207,29 @@ class PatrolRoute():
 
         return len(distinct_positions), len(obstacles)
 
-patrol_route = PatrolRoute("example.txt")
+patrol_route = PatrolRoute("input.txt")
+start = time.time()
+print(f"dealing with {len(patrol_route.matrix)}x{len(patrol_route.matrix[0])} matrix")
 p1, p2 = patrol_route.driver_code()
 print(f"part 1: {p1}")
 
 # example edge case
 # .#..
 # ...#
-# #...
+# ....
 # .^#.
-print(f"part 2: {p2}")
+print(f"part 2: {p2}") # 1681, actual is 1793
 # print(matrix)
+print(f"runtime: {time.time() - start:.2f}s")
+
+
+# Get-Process | select name,starttime,id | select-string -pattern "python"
+# pip install py-spy
+# py-spy record --python ./day6/pref.py
+# py-spy top -- python index.py
+# or do ongoing process
+# py-spy record profile.svg --pid PID
+
+
+# git clone https://git.sr.ht/~mariell/aoc.git
+# cargo run -- year2024 6 2
