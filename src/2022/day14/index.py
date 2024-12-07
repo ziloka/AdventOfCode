@@ -163,4 +163,5 @@ class Waterfall:
 waterfall = Waterfall("input.txt")
 print(f"part 1: {waterfall.part1_start_sand()}")
 start = time.time()
-print(f"part 2: {waterfall.part2_start_sand()} took: {time.time() - start:.2f}s")
+print(f"part 2: {waterfall.part2_start_sand()}")
+print(f"took: {time.time() - start:.2f}s")
