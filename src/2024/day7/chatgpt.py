@@ -1,3 +1,5 @@
+# https://chatgpt.com/share/67552610-648c-8003-a717-eba5cd710149
+
 import time
 
 def parse_input(input_text):
