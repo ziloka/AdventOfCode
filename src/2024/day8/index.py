@@ -23,14 +23,7 @@ class FrequencyMap:
         dr = r2 - r1
         dc = c2 - c1
         assert r2 > r1
-        # if dr == 0: # horizontal
-        #     return [(r1, c1 - dc), (r2, c2 + dc)]
-        # elif dc == 0: # vertical
-        #     return [(r1 - dr, c1), (r2 + dr, c2)]
-        # el
-        if dr > 0 and dc < 0: # \
-            return [(r1 - dr, c1 - dc), (r2 + dr, c2 + dc)]
-        elif dr > 0 and dc > 0: # /
+        if (dr > 0 and dc < 0) or (dr > 0 and dc > 0): # \, /
             return [(r1 - dr, c1 - dc), (r2 + dr, c2 + dc)]
         else:
             raise Exception(f"unexpected coords: {anteannas} {dr} {dc}")
@@ -62,5 +55,5 @@ class FrequencyMap:
             table_string += "\n"
         print(table_string)
 
-freqMap = FrequencyMap()
+freqMap = FrequencyMap("input.txt")
 print(f"part 1: {freqMap.part1()}")
