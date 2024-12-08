@@ -26,5 +26,8 @@
   },
   "terminal.integrated.defaultProfile.windows": "Python virtualenv",
   "python.REPL.enableREPLSmartSend": false,
-  "python.defaultInterpreterPath": "python"
+  "python.defaultInterpreterPath": "python",
+  "pylint.args": [
+    ""
+  ]
 }

@@ -1,11 +1,3 @@
-from enum import Enum
-
-class ORIENTATION(Enum):
-    VERTICAL = 1
-    HORIZONTAL = 2
-    LEFT_DIAGONAL = 3 # \
-    RIGHT_DIAGONAL = 4 # /
-
 class FrequencyMap:
     def __init__(self, filename="example.txt"):
         self.city_map = open(filename, encoding="utf8").read().splitlines()
@@ -25,33 +17,23 @@ class FrequencyMap:
                     self.types.add(hz)
                 self.positions.add((r, c))
 
-    def direction(self, coords):
-        r1, c1 = coords[0]
-        r2, c2 = coords[1]
+    def get_antinodes(self, anteannas):
+        r1, c1 = anteannas[0]
+        r2, c2 = anteannas[1]
         dr = r2 - r1
         dc = c2 - c1
-        if dr == 0:
-            return ORIENTATION.HORIZONTAL
-        if dc == 0:
-            return ORIENTATION.VERTICAL
-        if dr == dc:
-            return ORIENTATION.LEFT_DIAGONAL
-        if -dr == dc:
-            return ORIENTATION.RIGHT_DIAGONAL
-
-    def get_antinodes(self, coords):
-        r1, c1 = coords[0]
-        r2, c2 = coords[1]
-        dr = r2 - r1
-        dc = c2 - c1
-        if dr == 0:# LEFT and RIGHT
-            return [(r1, c1 - 1), (r1, c1 + 1)]
-        if dc == 0:
-            return [(r1 - 1, c1), (r1 + 1, c1)]
-        if dr == dc:
-            return [(r1 - 1, c1 - 1), (r1 + 1, c1 + 1)]
-        if -dr == dc:
-            return [(r1 - 1, c1 + 1), (r1 + 1, c1 - 1)]
+        assert r2 > r1
+        # if dr == 0: # horizontal
+        #     return [(r1, c1 - dc), (r2, c2 + dc)]
+        # elif dc == 0: # vertical
+        #     return [(r1 - dr, c1), (r2 + dr, c2)]
+        # el
+        if dr > 0 and dc < 0: # \
+            return [(r1 - dr, c1 - dc), (r2 + dr, c2 + dc)]
+        elif dr > 0 and dc > 0: # /
+            return [(r1 - dr, c1 - dc), (r2 + dr, c2 + dc)]
+        else:
+            raise Exception(f"unexpected coords: {anteannas} {dr} {dc}")
 
     def part1(self):
         antinodes = dict()
@@ -61,23 +43,10 @@ class FrequencyMap:
             for i in range(0, len(self.antennas[hz])):
                 for j in range(i + 1, len(self.antennas[hz])):
                     if i != j:
-                        r1, c1 = self.antennas[hz][i]
-                        r2, c2 = self.antennas[hz][j]
-
-                        dr = abs(r2 - r1)
-                        dc = abs(c2 - c1)
-
-                        # determine antinode position
-
-                        # these antinodes are only for left diagonal though
-                        n_ants = [(r1 - dr, c1 - dc), (r2 + dr, r2 + dc)]
-                        valid = True
+                        # print(f"{hz} {i} {j}")
+                        n_ants = self.get_antinodes((self.antennas[hz][i], self.antennas[hz][j]))
                         for n_ant in n_ants:
-                            if n_ant not in self.positions:
-                                valid = False
-                                break
-                        if valid and n_ants[0] not in antinodes and n_ants[1] not in antinodes:
-                            for n_ant in n_ants:
+                            if  n_ant in self.positions:
                                 antinodes[n_ant] = hz
         self.debug(antinodes)
         return len(antinodes)
