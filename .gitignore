@@ -3,5 +3,5 @@
 *.png
 *.jpg
 *.jpeg
-venv
+.venv
 .env
