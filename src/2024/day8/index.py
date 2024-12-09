@@ -28,8 +28,6 @@ class FrequencyMap:
     def is_valid(self, coords):
         return 0 <= coords[0] < self.num_table_rows and 0 <= coords[1] < self.num_table_cols
 
-    # first element is going upwards, second element is downwards
-    # for left diagonal, arr[0] is upwards, arr[1] is downwards
     def get_antinodes(self, anteannas, option=OPTION.BOTH):
         r1, c1 = anteannas[0]
         r2, c2 = anteannas[1]
@@ -82,17 +80,16 @@ class FrequencyMap:
                         prev_ant = self.antennas[hz][j]
                         while True:
                             assert len(n_ants) == 2
-                            for n, n_ant in enumerate(n_ants):
+                            for option, n_ant in zip([OPTION.DOWN, OPTION.UP], n_ants):
                                 if tuple(n_ant) in self.positions:
                                     antinodes.add(tuple([*n_ant, hz]))
                                     prev_ant = n_ant
                                 else:
                                     if direction == OPTION.BOTH:
-                                        direction = OPTION.DOWN if n == 0 else OPTION.UP
+                                        direction = option
                                         n_ants = [prev_ant, n_ants[-1]]
                                     elif all([not self.is_valid(n_ant) for n_ant in n_ants]):
                                         break
-                                    n_ants = self.get_antinodes(n_ants, direction)
                             else:
                                 n_ants = self.get_antinodes(n_ants, direction)
                                 continue
