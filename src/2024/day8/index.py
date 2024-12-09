@@ -25,6 +25,9 @@ class FrequencyMap:
                     self.types.add(hz)
                 self.positions.add((r, c))
 
+    def is_valid(self, coords):
+        return 0 <= coords[0] < self.num_table_rows and 0 <= coords[1] < self.num_table_cols
+
     # first element is going upwards, second element is downwards
     # for left diagonal, arr[0] is upwards, arr[1] is downwards
     def get_antinodes(self, anteannas, option=OPTION.BOTH):
@@ -75,26 +78,23 @@ class FrequencyMap:
                         antinodes.add(tuple([*self.antennas[hz][i], hz]))
                         antinodes.add(tuple([*self.antennas[hz][j], hz]))
                         n_ants = self.get_antinodes((self.antennas[hz][i], self.antennas[hz][j]))
-                        switchUsed = False
                         direction = None
-                        while not switchUsed:
+                        print(f"{self.antennas[hz][i]}, {self.antennas[hz][j]}")
+                        while True:
                             assert len(n_ants) == 2
                             for n, n_ant in enumerate(n_ants):
                                 if tuple(n_ant) in self.positions:
                                     antinodes.add(tuple([*n_ant, hz]))
-                                elif not switchUsed:
-                                    switchUsed = True
-                                    if n == 0:
-                                        direction = OPTION.DOWN
-                                    elif n == 1:
-                                        direction = OPTION.UP
-                                    continue
                                 else:
-                                    break
+                                    if direction is None:
+                                        direction = OPTION.DOWN if n == 0 else OPTION.UP
+                                    elif all([not self.is_valid(n_ant) for n_ant in n_ants]):
+                                        break
                             else:
-                                print(direction, n_ants)
+                                print(f"before: {direction} {n_ants}")
                                 n_ants = self.get_antinodes(n_ants, direction)
-                                continue        
+                                print(f"after: {direction} {n_ants}")
+                                continue
                             break
 
         self.debug(antinodes)
