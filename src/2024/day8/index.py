@@ -66,6 +66,8 @@ class FrequencyMap:
             for i in range(0, len(self.antennas[hz])):
                 for j in range(i + 1, len(self.antennas[hz])):
                     if i != j:
+                        antinodes[self.antennas[hz][i]] = hz
+                        antinodes[self.antennas[hz][j]] = hz
                         n_ants = self.get_antinodes((self.antennas[hz][i], self.antennas[hz][j]))
                         antinode_position_history = [self.antennas[hz][i], self.antennas[hz][j]]
                         switchUsed = False
@@ -85,10 +87,9 @@ class FrequencyMap:
                                         n_ants[1],
                                         self.get_antinodes((antinode_position_history[-1], n_ants[1]))[1]
                                     ]
-                                    if n_ants[0] == n_ants[1]:
-                                        break
                                 else:
                                     assert False
+
                             for n, n_ant in enumerate(n_ants):
                                 if n_ant in self.positions:
                                     antinodes[n_ant] = hz
@@ -102,7 +103,7 @@ class FrequencyMap:
                                         antinode_position_history.append(n_ants[0])
                                         direction = Direction.DOWN
                                         switchUsed = True
-                                        # print("got here")
+                                        continue
                                     elif n == 1 and not switchUsed: # go upwards instead
                                         n_ants = [
                                             self.get_antinodes((antinode_position_history[-1], n_ants[1]))[0],
@@ -111,11 +112,11 @@ class FrequencyMap:
                                         antinode_position_history.append(n_ants[1])
                                         switchUsed = True
                                         direction = Direction.UP
-                                        # print("got here 2")
+                                        continue
                                     else:
-                                        print("is this the end?")
                                         break
                             else:
+                                n_ants = self.get_antinodes(n_ants)
                                 continue        
                             break
 
