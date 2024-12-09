@@ -1,7 +1,8 @@
+import time
 import functools
 
 individual_blocks = []
-diskmap = [*map(int, [*open("example.txt").read()])]
+diskmap = [*map(int, [*open("input.txt").read()])]
 spaces = []
 files = []
 last_space = 0
@@ -15,21 +16,25 @@ for i, digit in enumerate(diskmap):
         for _ in range(digit):
             individual_blocks.append(".")
             spaces.append(len(individual_blocks) - 1)
-        last_space = i
+        last_space = len(individual_blocks) - 1
 
 space_idx = 0
 files_idx = len(files) - 1
-while space_idx < len(spaces):
-    s = spaces[space_idx]
-    f, fileId = files[files_idx]
-    print("".join(individual_blocks))
-    individual_blocks[s] = fileId
-    individual_blocks[f] = "."
+while spaces[space_idx] < files[files_idx][0]:
+    s_block = spaces[space_idx]
+    f_block, fileId = files[files_idx]
+    individual_blocks[s_block] = fileId
+    individual_blocks[f_block] = "."
     space_idx += 1
     files_idx -= 1
-    print(space_idx, spaces[space_idx:])
+    # print(f"{idx} {space_idx}")
+    # print(f"{s_block} {f_block} {last_space}")
+    # print("".join(individual_blocks))
 
 checksum = 0
 for i, d in enumerate([*filter(lambda s: s != '.', individual_blocks)]):
     checksum += int(d) * i
+
+start_time = time.time()
 print(f"part 1: {checksum}")
+print(f"took {time.time() - start_time:.2f}s")
