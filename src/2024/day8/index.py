@@ -1,4 +1,10 @@
+from enum import Enum
 import time
+
+# diagonally
+class Direction(Enum):
+    UP = 0 
+    DOWN = 1 
 
 class FrequencyMap:
     def __init__(self, filename="example.txt"):
@@ -26,8 +32,8 @@ class FrequencyMap:
         r2, c2 = anteannas[1]
         dr = r2 - r1
         dc = c2 - c1
-        left_diagonal = (dr > 0 and dc < 0)
-        right_diagonal = (dr > 0 and dc > 0)
+        left_diagonal = dr >= 0 and dc <= 0
+        right_diagonal = dr >= 0 and dc >= 0
         assert r2 > r1 or left_diagonal or right_diagonal
         return [(r1 - dr, c1 - dc), (r2 + dr, c2 + dc)]
 
@@ -61,26 +67,59 @@ class FrequencyMap:
                 for j in range(i + 1, len(self.antennas[hz])):
                     if i != j:
                         n_ants = self.get_antinodes((self.antennas[hz][i], self.antennas[hz][j]))
-                        antinode_positions = [self.antennas[hz][i], self.antennas[hz][j]]
-                        while True:
+                        antinode_position_history = [self.antennas[hz][i], self.antennas[hz][j]]
+                        switchUsed = False
+                        continueOneDirection = False
+                        direction = None
+                        while not switchUsed or not continueOneDirection:
+                            assert len(n_ants) == 2
+
+                            if switchUsed:
+                                if direction == Direction.UP:
+                                    n_ants = [
+                                        self.get_antinodes((antinode_position_history[-1], n_ants[1]))[0],
+                                        n_ants[0]
+                                    ]
+                                elif direction == Direction.DOWN:
+                                    n_ants = [
+                                        n_ants[1],
+                                        self.get_antinodes((antinode_position_history[-1], n_ants[1]))[1]
+                                    ]
+                                    if n_ants[0] == n_ants[1]:
+                                        break
+                                else:
+                                    assert False
                             for n, n_ant in enumerate(n_ants):
                                 if n_ant in self.positions:
                                     antinodes[n_ant] = hz
-                                    antinode_positions[n] = n_ant
+                                    antinode_position_history.append(n_ant)
                                 else:
-                                    if n == 0: # go downwards instead
-                                        n_ants = self.get_antinodes((antinode_positions[1], n_ants[1]))
-                                    elif n == 1: # go upwards instead
-                                        n_ants = self.get_antinodes((n_ants[0], antinode_positions[0]))
+                                    if n == 0 and not switchUsed: # go downwards instead
+                                        n_ants = [
+                                            n_ants[1],
+                                            self.get_antinodes((antinode_position_history[-1], n_ants[1]))[1]
+                                        ]
+                                        antinode_position_history.append(n_ants[0])
+                                        direction = Direction.DOWN
+                                        switchUsed = True
+                                        # print("got here")
+                                    elif n == 1 and not switchUsed: # go upwards instead
+                                        n_ants = [
+                                            self.get_antinodes((antinode_position_history[-1], n_ants[1]))[0],
+                                            n_ants[0]
+                                        ]
+                                        antinode_position_history.append(n_ants[1])
+                                        switchUsed = True
+                                        direction = Direction.UP
+                                        # print("got here 2")
                                     else:
-                                        assert False
+                                        print("is this the end?")
+                                        break
+                            else:
+                                continue        
+                            break
 
-                            # check if antinodes are in invalid positions
-                            for n_ant in n_ants:
-                                if n_ant not in self.positions:
-                                    break
-                            print(len(antinodes))
-                            print(n_ant)
+        self.debug(antinodes)
         return len(antinodes)
 
 freqMap = FrequencyMap("example.txt")
