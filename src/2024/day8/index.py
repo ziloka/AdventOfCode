@@ -40,9 +40,9 @@ class FrequencyMap:
         downwards_cords = (r2 + dr, c2 + dc) 
         match option:
             case OPTION.UP:
-                return upwards_cords
+                return [upwards_cords, anteannas[0]]
             case OPTION.DOWN:
-                return downwards_cords
+                return [anteannas[1], downwards_cords]
             case OPTION.BOTH:
                 return [upwards_cords, downwards_cords]
             case _:
@@ -75,43 +75,25 @@ class FrequencyMap:
                         antinodes.add(tuple([*self.antennas[hz][i], hz]))
                         antinodes.add(tuple([*self.antennas[hz][j], hz]))
                         n_ants = self.get_antinodes((self.antennas[hz][i], self.antennas[hz][j]))
-                        prev_ant_pos = self.antennas[hz][j]
                         switchUsed = False
-                        continueOneDirection = False
                         direction = None
-                        while not switchUsed or not continueOneDirection:
-                            # assert len(n_ants) == 2
-                            coords = (prev_ant_pos, n_ants[1])
-                            if switchUsed:
-                                if direction == OPTION.UP:
-                                    n_ants = [self.get_antinodes(coords, OPTION.UP), n_ants[0]]
-                                elif direction == OPTION.DOWN:
-                                    n_ants = [n_ants[1], self.get_antinodes(coords, OPTION.DOWN)]
-                                else:
-                                    assert False
-
+                        while not switchUsed:
+                            assert len(n_ants) == 2
                             for n, n_ant in enumerate(n_ants):
                                 if tuple(n_ant) in self.positions:
                                     antinodes.add(tuple([*n_ant, hz]))
-                                    prev_ant_pos = n_ant
-                                else:
-                                    if n == 0 and not switchUsed: # go downwards instead
-                                        n_ants = [n_ants[1], self.get_antinodes(coords, OPTION.DOWN)]
-                                        prev_ant_pos = n_ants[0]
+                                elif not switchUsed:
+                                    switchUsed = True
+                                    if n == 0:
                                         direction = OPTION.DOWN
-                                        switchUsed = True
-                                        continue
-                                    elif n == 1 and not switchUsed: # go upwards instead
-                                        n_ants = [self.get_antinodes(coords, OPTION.UP), n_ants[0]]
-                                        prev_ant_pos = n_ants[1]
-                                        switchUsed = True
+                                    elif n == 1:
                                         direction = OPTION.UP
-                                        continue
-                                    else:
-                                        break
+                                    continue
+                                else:
+                                    break
                             else:
                                 print(direction, n_ants)
-                                n_ants = [self.get_antinodes(n_ants, direction)]
+                                n_ants = self.get_antinodes(n_ants, direction)
                                 continue        
                             break
 
