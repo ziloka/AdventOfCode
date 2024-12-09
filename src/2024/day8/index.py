@@ -18,7 +18,7 @@ class FrequencyMap:
             self.num_table_cols = len(row)
             for c, hz in enumerate(row):
                 if hz != "." and hz != "#":
-                    if self.antennas.get(hz) is None:
+                    if self.antennas.get(hz) == None:
                         self.antennas[hz] = [(r, c)]
                     else:
                         self.antennas[hz] += [(r, c)]
@@ -78,8 +78,7 @@ class FrequencyMap:
                         antinodes.add(tuple([*self.antennas[hz][i], hz]))
                         antinodes.add(tuple([*self.antennas[hz][j], hz]))
                         n_ants = self.get_antinodes((self.antennas[hz][i], self.antennas[hz][j]))
-                        direction = None
-                        print(f"{self.antennas[hz][i]}, {self.antennas[hz][j]}")
+                        direction = OPTION.BOTH
                         prev_ant = self.antennas[hz][j]
                         while True:
                             assert len(n_ants) == 2
@@ -88,7 +87,7 @@ class FrequencyMap:
                                     antinodes.add(tuple([*n_ant, hz]))
                                     prev_ant = n_ant
                                 else:
-                                    if direction is None:
+                                    if direction == OPTION.BOTH:
                                         direction = OPTION.DOWN if n == 0 else OPTION.UP
                                         n_ants = [prev_ant, n_ants[-1]]
                                     elif all([not self.is_valid(n_ant) for n_ant in n_ants]):
