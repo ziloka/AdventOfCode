@@ -80,20 +80,22 @@ class FrequencyMap:
                         n_ants = self.get_antinodes((self.antennas[hz][i], self.antennas[hz][j]))
                         direction = None
                         print(f"{self.antennas[hz][i]}, {self.antennas[hz][j]}")
+                        prev_ant = self.antennas[hz][j]
                         while True:
                             assert len(n_ants) == 2
                             for n, n_ant in enumerate(n_ants):
                                 if tuple(n_ant) in self.positions:
                                     antinodes.add(tuple([*n_ant, hz]))
+                                    prev_ant = n_ant
                                 else:
                                     if direction is None:
                                         direction = OPTION.DOWN if n == 0 else OPTION.UP
+                                        n_ants = [prev_ant, n_ants[-1]]
                                     elif all([not self.is_valid(n_ant) for n_ant in n_ants]):
                                         break
+                                    n_ants = self.get_antinodes(n_ants, direction)
                             else:
-                                print(f"before: {direction} {n_ants}")
                                 n_ants = self.get_antinodes(n_ants, direction)
-                                print(f"after: {direction} {n_ants}")
                                 continue
                             break
 
