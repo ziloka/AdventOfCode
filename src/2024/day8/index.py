@@ -38,18 +38,13 @@ class FrequencyMap:
         return [(r1 - dr, c1 - dc), (r2 + dr, c2 + dc)]
 
     def debug(self, antinodes):
-        table_string = ""
-        for r in range(self.num_table_rows):
-            for c in range(self.num_table_cols):
-                if (r, c) in antinodes:
-                    table_string += antinodes[(r, c)]
-                else:
-                    table_string += "."
-            table_string += "\n"
-        print(table_string)
+        table = [["." for _ in range(self.num_table_cols)] for _ in range(self.num_table_rows)]
+        for r, c, hz in [*antinodes]:
+            table[r][c] = hz
+        print( "\n".join(map(lambda row: "".join(row), table)))
 
     def part1(self):
-        antinodes = dict()
+        antinodes = set()
         for hz in self.types:
             for i in range(0, len(self.antennas[hz])):
                 for j in range(i + 1, len(self.antennas[hz])):
@@ -57,17 +52,17 @@ class FrequencyMap:
                         n_ants = self.get_antinodes((self.antennas[hz][i], self.antennas[hz][j]))
                         for n_ant in n_ants:
                             if n_ant in self.positions:
-                                antinodes[n_ant] = hz
+                                antinodes.add(n_ant)
         return len(antinodes)
 
     def part2(self):
-        antinodes = dict()
+        antinodes = set()
         for hz in self.types:
             for i in range(0, len(self.antennas[hz])):
                 for j in range(i + 1, len(self.antennas[hz])):
                     if i != j:
-                        antinodes[self.antennas[hz][i]] = hz
-                        antinodes[self.antennas[hz][j]] = hz
+                        antinodes.add(tuple([*self.antennas[hz][i], hz]))
+                        antinodes.add(tuple([*self.antennas[hz][j], hz]))
                         n_ants = self.get_antinodes((self.antennas[hz][i], self.antennas[hz][j]))
                         antinode_position_history = [self.antennas[hz][i], self.antennas[hz][j]]
                         switchUsed = False
@@ -92,7 +87,7 @@ class FrequencyMap:
 
                             for n, n_ant in enumerate(n_ants):
                                 if n_ant in self.positions:
-                                    antinodes[n_ant] = hz
+                                    antinodes.add(tuple([*n_ant, hz]))
                                     antinode_position_history.append(n_ant)
                                 else:
                                     if n == 0 and not switchUsed: # go downwards instead
