@@ -67,8 +67,10 @@ class FrequencyMap:
                                 antinodes.add(n_ant)
         return len(antinodes)
 
-    def part2(self):
-        antinodes = set()
+    def part2_helper(self, antinodes, addedSomething=True):
+        if not addedSomething:
+            return antinodes
+        addedSomething = False
         for hz in self.types:
             for i in range(0, len(self.antennas[hz])):
                 for j in range(i + 1, len(self.antennas[hz])):
@@ -83,6 +85,7 @@ class FrequencyMap:
                             for option, n_ant in zip([OPTION.DOWN, OPTION.UP], n_ants):
                                 if tuple(n_ant) in self.positions:
                                     antinodes.add(tuple([*n_ant, hz]))
+                                    addedSomething = True
                                     prev_ant = n_ant
                                 else:
                                     if direction == OPTION.BOTH:
@@ -94,6 +97,11 @@ class FrequencyMap:
                                 n_ants = self.get_antinodes(n_ants, direction)
                                 continue
                             break
+        return self.part2_helper(antinodes, addedSomething)
+
+    def part2(self):
+        antinodes = set()
+        
 
         self.debug(antinodes)
         return len(antinodes)
