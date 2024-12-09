@@ -1,10 +1,10 @@
 from enum import Enum
 import time
 
-# diagonally
-class Direction(Enum):
+class OPTION(Enum):
     UP = 0 
-    DOWN = 1 
+    DOWN = 1
+    BOTH = 2
 
 class FrequencyMap:
     def __init__(self, filename="example.txt"):
@@ -27,7 +27,7 @@ class FrequencyMap:
 
     # first element is going upwards, second element is downwards
     # for left diagonal, arr[0] is upwards, arr[1] is downwards
-    def get_antinodes(self, anteannas):
+    def get_antinodes(self, anteannas, option=OPTION.BOTH):
         r1, c1 = anteannas[0]
         r2, c2 = anteannas[1]
         dr = r2 - r1
@@ -35,7 +35,18 @@ class FrequencyMap:
         left_diagonal = dr >= 0 and dc <= 0
         right_diagonal = dr >= 0 and dc >= 0
         assert r2 > r1 or left_diagonal or right_diagonal
-        return [(r1 - dr, c1 - dc), (r2 + dr, c2 + dc)]
+
+        upwards_cords = (r1 - dr, c1 - dc)
+        downwards_cords = (r2 + dr, c2 + dc) 
+        match option:
+            case OPTION.UP:
+                return upwards_cords
+            case OPTION.DOWN:
+                return downwards_cords
+            case OPTION.BOTH:
+                return [upwards_cords, downwards_cords]
+            case _:
+                assert False
 
     def debug(self, antinodes):
         table = [["." for _ in range(self.num_table_cols)] for _ in range(self.num_table_rows)]
@@ -64,54 +75,43 @@ class FrequencyMap:
                         antinodes.add(tuple([*self.antennas[hz][i], hz]))
                         antinodes.add(tuple([*self.antennas[hz][j], hz]))
                         n_ants = self.get_antinodes((self.antennas[hz][i], self.antennas[hz][j]))
-                        antinode_position_history = [self.antennas[hz][i], self.antennas[hz][j]]
+                        prev_ant_pos = self.antennas[hz][j]
                         switchUsed = False
                         continueOneDirection = False
                         direction = None
                         while not switchUsed or not continueOneDirection:
-                            assert len(n_ants) == 2
-
+                            # assert len(n_ants) == 2
+                            coords = (prev_ant_pos, n_ants[1])
                             if switchUsed:
-                                if direction == Direction.UP:
-                                    n_ants = [
-                                        self.get_antinodes((antinode_position_history[-1], n_ants[1]))[0],
-                                        n_ants[0]
-                                    ]
-                                elif direction == Direction.DOWN:
-                                    n_ants = [
-                                        n_ants[1],
-                                        self.get_antinodes((antinode_position_history[-1], n_ants[1]))[1]
-                                    ]
+                                if direction == OPTION.UP:
+                                    n_ants = [self.get_antinodes(coords, OPTION.UP), n_ants[0]]
+                                elif direction == OPTION.DOWN:
+                                    n_ants = [n_ants[1], self.get_antinodes(coords, OPTION.DOWN)]
                                 else:
                                     assert False
 
                             for n, n_ant in enumerate(n_ants):
-                                if n_ant in self.positions:
+                                if tuple(n_ant) in self.positions:
                                     antinodes.add(tuple([*n_ant, hz]))
-                                    antinode_position_history.append(n_ant)
+                                    prev_ant_pos = n_ant
                                 else:
                                     if n == 0 and not switchUsed: # go downwards instead
-                                        n_ants = [
-                                            n_ants[1],
-                                            self.get_antinodes((antinode_position_history[-1], n_ants[1]))[1]
-                                        ]
-                                        antinode_position_history.append(n_ants[0])
-                                        direction = Direction.DOWN
+                                        n_ants = [n_ants[1], self.get_antinodes(coords, OPTION.DOWN)]
+                                        prev_ant_pos = n_ants[0]
+                                        direction = OPTION.DOWN
                                         switchUsed = True
                                         continue
                                     elif n == 1 and not switchUsed: # go upwards instead
-                                        n_ants = [
-                                            self.get_antinodes((antinode_position_history[-1], n_ants[1]))[0],
-                                            n_ants[0]
-                                        ]
-                                        antinode_position_history.append(n_ants[1])
+                                        n_ants = [self.get_antinodes(coords, OPTION.UP), n_ants[0]]
+                                        prev_ant_pos = n_ants[1]
                                         switchUsed = True
-                                        direction = Direction.UP
+                                        direction = OPTION.UP
                                         continue
                                     else:
                                         break
                             else:
-                                n_ants = self.get_antinodes(n_ants)
+                                print(direction, n_ants)
+                                n_ants = [self.get_antinodes(n_ants, direction)]
                                 continue        
                             break
 
