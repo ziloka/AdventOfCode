@@ -57,30 +57,29 @@ def parse_part2(filename):
     return individual_blocks, spaces, files
 
 def move_multiple_blocks(individual_blocks, spaces, files):
-    space_idx = 0
-    jump = True
-    remainingSpace = 0
     for f_block, fileId, f_size in files[::-1]:
-        s_block, s_size = spaces[space_idx]
-        if jump:
-            remainingSpace = s_size
-            jump = False
-        
-        print(f"Id: {fileId}")
-        if f_size <= remainingSpace:
-            remainingSpace -= f_size
-            jump = False
-            for i in range(s_block, s_block + s_size):
+        best_start = None
+        best_size = 0
+
+        for s_block, s_size in spaces:
+            if s_block < f_block and s_size >= f_size:
+                if s_size > best_size:  
+                    best_start = s_block
+                    best_size = s_size
+
+        if best_start is not None: 
+            print("".join(individual_blocks))
+            for i in range(best_start, best_start + f_size):
                 individual_blocks[i] = fileId
-            # print(f_block, f_block + f_size)
             for i in range(f_block, f_block + f_size):
                 individual_blocks[i] = "."
-            print("".join(individual_blocks))
-        
-        if remainingSpace == 0:
-            space_idx += 1
-            jump = True
-        
+
+            for space in spaces:
+                if space[0] == best_start:
+                    space[1] -= f_size
+                    space[0] += f_size
+                    break
+
 def part2(filename):
     individual_blocks, spaces, files = parse_part2(filename)
     move_multiple_blocks(individual_blocks, spaces, files)
