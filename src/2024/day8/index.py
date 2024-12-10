@@ -109,5 +109,5 @@ class FrequencyMap:
 freqMap = FrequencyMap("example.txt")
 start_time = time.time()
 print(f"part 1: {freqMap.part1()}")
-print(f"part 2: {freqMap.part2()}")
+print(f"part 2: {freqMap.part2()}") # TODO: left diagonal does not work?
 print(f"took {time.time() - start_time:.2f}s")
