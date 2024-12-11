@@ -57,33 +57,25 @@ def parse_part2(filename):
     return individual_blocks, spaces, files
 
 def move_multiple_blocks(individual_blocks, spaces, files):
-    # Process files in reverse order of their IDs
     for f_block, fileId, f_size in files[::-1]:
-        # Find the leftmost available space that can fit the file
         best_start = None
         
         for s_block, s_size in spaces:
-            # Ensure the free space is to the left of the file and can fit the file size
             if s_block < f_block and s_size >= f_size:
                 best_start = s_block
-                break  # Take the first suitable space
+                break
 
-        # If a suitable space is found, move the file
         if best_start is not None:
-            # Clear the original file blocks
             for i in range(f_block, f_block + f_size):
                 individual_blocks[i] = '.'
-            
-            # Place the file in the found space
+
             for i in range(best_start, best_start + f_size):
                 individual_blocks[i] = str(fileId)
             
-            # Update the spaces list
             for index in range(len(spaces)):
                 if spaces[index][0] == best_start:
                     new_start = best_start + f_size
                     new_size = spaces[index][1] - f_size
-                    # Remove the space if it becomes zero
                     if new_size == 0:
                         spaces.pop(index)
                     else:
@@ -95,8 +87,11 @@ def part2(filename):
     move_multiple_blocks(individual_blocks, spaces, files)
     return calculate_checksum(individual_blocks)
 
-filename = "input.txt"
+filename = "input2.txt.HARDER"
 start_time = time.time()
 print(f"part 1: {part1(filename)}")
 print(f"part 2: {part2(filename)}")
 print(f"took {time.time() - start_time:.2f}s")
+
+# some more if you want to torture your brain
+# https://www.reddit.com/r/adventofcode/comments/1haauty/2024_day_9_part_2_bonus_test_case_that_might_make/
