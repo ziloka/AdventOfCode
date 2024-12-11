@@ -17,11 +17,10 @@ class TopographicMap:
 
     # iterative DFS approach
     def get_trailheads(self, visited, pos):
-        target_height = 1
         trailheads = 0
-        stack = [pos]
+        stack = [(pos, 1)]
         while len(stack):
-            pos = stack[-1]
+            pos, target_height = stack[-1]
             stack.pop()
             if pos not in visited:
                 print(f"visited {pos}, {self.map[pos]}")
@@ -35,7 +34,7 @@ class TopographicMap:
                 new_pos = (pos[0] + dr, pos[1] + dc)
                 if self.is_valid(*new_pos) and new_pos not in visited: # not visited
                     if self.map[new_pos]+1 == target_height:
-                        stack.append(new_pos)
+                        stack.append((new_pos, target_height))
         return trailheads
 
     def part1(self):
@@ -46,9 +45,6 @@ class TopographicMap:
                     source = (i, j)
                     visited = {}
                     trailheads = self.get_trailheads(visited, source)
-                    print(trailheads)
-                    print()
-                    # exit()
                     cumulative_score += trailheads
         return cumulative_score
     
@@ -56,7 +52,7 @@ class TopographicMap:
     def part2(self):    
         return
 
-map = TopographicMap("example.txt")
+map = TopographicMap("input.txt")
 time_start = time.time()
 print(f"part 1: {map.part1()}")
 print(f"part 2: {map.part2()}")
