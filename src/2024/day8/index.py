@@ -67,47 +67,44 @@ class FrequencyMap:
                                 antinodes.add(n_ant)
         return len(antinodes)
 
-    def part2_helper(self, antinodes, addedSomething=True):
-        if not addedSomething:
-            return antinodes
-        addedSomething = False
+    def part2_helper(self):
+        antinodes = set()
         for hz in self.types:
-            for i in range(0, len(self.antennas[hz])):
-                for j in range(i + 1, len(self.antennas[hz])):
-                    if i != j:
-                        antinodes.add(tuple([*self.antennas[hz][i], hz]))
-                        antinodes.add(tuple([*self.antennas[hz][j], hz]))
-                        n_ants = self.get_antinodes((self.antennas[hz][i], self.antennas[hz][j]))
-                        direction = OPTION.BOTH
-                        prev_ant = self.antennas[hz][j]
-                        while True:
-                            assert len(n_ants) == 2
-                            for option, n_ant in zip([OPTION.DOWN, OPTION.UP], n_ants):
-                                if tuple(n_ant) in self.positions:
-                                    antinodes.add(tuple([*n_ant, hz]))
-                                    addedSomething = True
-                                    prev_ant = n_ant
-                                else:
-                                    if direction == OPTION.BOTH:
-                                        direction = option
-                                        n_ants = [prev_ant, n_ants[-1]]
-                                    elif all([not self.is_valid(n_ant) for n_ant in n_ants]):
-                                        break
-                            else:
-                                n_ants = self.get_antinodes(n_ants, direction)
-                                continue
-                            break
-        return self.part2_helper(antinodes, addedSomething)
+            antenna_positions = self.antennas[hz]
+
+            for ant in antenna_positions:
+                antinodes.add((ant[0], ant[1], hz))
+
+            for i in range(len(antenna_positions)):
+                for j in range(i + 1, len(antenna_positions)):
+                    a1 = antenna_positions[i]
+                    a2 = antenna_positions[j]
+
+                    n_ants = self.get_antinodes((a1, a2))
+                    for n_ant in n_ants:
+                        if self.is_valid(n_ant):
+                            antinodes.add((*n_ant, hz))
+
+                    dr = a2[0] - a1[0]
+                    dc = a2[1] - a1[1]
+
+                    current = (a2[0] + dr, a2[1] + dc)
+                    while self.is_valid(current):
+                        antinodes.add((*current, hz))
+                        current = (current[0] + dr, current[1] + dc)
+
+                    current = (a1[0] - dr, a1[1] - dc)
+                    while self.is_valid(current):
+                        antinodes.add((*current, hz))
+                        current = (current[0] - dr, current[1] - dc)
+        return antinodes
 
     def part2(self):
-        antinodes = set()
-        
+        antinodes = self.part2_helper()
+        return len(set((r, c) for r, c, _ in antinodes))
 
-        self.debug(antinodes)
-        return len(antinodes)
-
-freqMap = FrequencyMap("example.txt")
+freqMap = FrequencyMap("input.txt")
 start_time = time.time()
 print(f"part 1: {freqMap.part1()}")
-print(f"part 2: {freqMap.part2()}") # TODO: left diagonal does not work?
+print(f"part 2: {freqMap.part2()}")
 print(f"took {time.time() - start_time:.2f}s")
