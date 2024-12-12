@@ -50,43 +50,38 @@ class HikingTrails:
 
     # iterative DFS approach
     def get_num_ratings(self, visited, pos):
-        hiking_trails = []
-        trail = set()
-        stack = [(pos, 1)]
-        while len(stack):
-            pos, target_height = stack[-1]
-            stack.pop()
-            if pos not in visited:
-                visited[pos] = True
-                trail.add(pos)
-                # print(f"{pos} {target_height}")
-                if self.map[pos] == MAX_HEIGHT:
-                    hiking_trails.append(trail)
-                    self.debug(trail)
-                    trail = set()
-                    target_height = 1
-                    # print()
-                else:
-                    target_height += 1
+        unique_trails = set()
 
-            for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]: # visit adjacent nodes
-                new_pos = (pos[0] + dr, pos[1] + dc)
-                if new_pos in self.map and new_pos not in visited: # not visited
-                    # print(f"{new_pos} {target_height}")
-                    if self.map[new_pos]+1 == target_height:
-                        stack.append((new_pos, target_height))
-        return len(hiking_trails)
+        # DFS helper function to find trails
+        def dfs(path, current_pos, target_height):
+            if current_pos in visited or current_pos not in self.map:
+                return
+            if self.map[current_pos] != target_height - 1:
+                return
+            if self.map[current_pos] == MAX_HEIGHT:
+                unique_trails.add(tuple(sorted(path + [current_pos])))
+                return
+            
+            visited.add(current_pos)
+            path.append(current_pos)
+
+            for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                new_pos = (current_pos[0] + dr, current_pos[1] + dc)
+                dfs(path[:], new_pos, target_height + 1)
+
+            visited.remove(current_pos)  # Backtrack
+
+        dfs([], pos, 1)
+        return len(unique_trails)
     
     def part2(self):    
-        trailheads = self.get_num_ratings({}, (0, 4))
-        print(trailheads)
-        # cumulative_score = 0
-        # for source in [*filter(lambda p: self.map[p] == 0, self.map)]:
-        #     trailheads = self.get_num_ratings({}, source)
-        #     cumulative_score += trailheads
-        # return cumulative_score
+        cumulative_score = 0
+        for source in [*filter(lambda p: self.map[p] == 0, self.map)]:
+            trailheads = self.get_num_ratings(set(), source)
+            cumulative_score += trailheads
+        return cumulative_score
 
-hiking_trails = HikingTrails("example.txt")
+hiking_trails = HikingTrails("input.txt")
 time_start = time.time()
 print(f"part 1: {hiking_trails.part1()}")
 print(f"part 2: {hiking_trails.part2()}")
