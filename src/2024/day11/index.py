@@ -1,8 +1,7 @@
+from functools import cache
 import time
 
-def transform(stone, memo):
-    if stone in memo:
-        return memo[stone]
+def transform(stone):
     if stone == 0:
         result = [1]
     elif len(str(stone)) % 2 == 0:
@@ -13,29 +12,19 @@ def transform(stone, memo):
         result = [left_half, right_half]
     else:
         result = [stone * 2024]
-    memo[stone] = result
     return result
 
-def pebble(stones, n):
-    stones = stones.copy()
-    memo = {}
-    for _ in range(n):
-        new_stones = []
-        for stone in stones:
-            new_stones.extend(transform(stone, memo))
-        stones = new_stones
-    return stones
+@cache
+def blink(stones, blinks_left):
+    if blinks_left == 0:
+        return len(stones)
+    
+    return sum(blink(tuple(transform(stone)),  blinks_left - 1) for stone in stones)
 
-# Read input stones
-stones = [*map(int, open("input.txt").read().split())]
+stones = tuple([*map(int, open("input.txt").read().split())])
 
-# Measure execution time
 start_time = time.time()
-
-# Part 1
-print(f"part 1: {len(pebble(stones, 25))}")
-
-# Uncomment below for part 2 (it will be resource-intensive)
-print(f"part 2: {len(pebble(stones, 75))}")
+print(f"part 1: {blink(stones, 25)}")
+print(f"part 2: {blink(stones, 75)}")
 
 print(f"took {time.time() - start_time:.2f}s")
