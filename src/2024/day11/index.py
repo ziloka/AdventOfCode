@@ -1,28 +1,41 @@
 import time
 
-def blink(stones, n):
+def transform(stone, memo):
+    if stone in memo:
+        return memo[stone]
+    if stone == 0:
+        result = [1]
+    elif len(str(stone)) % 2 == 0:
+        stone_string = str(stone)
+        half = len(stone_string) // 2
+        left_half = int(stone_string[:half])
+        right_half = int(stone_string[half:])
+        result = [left_half, right_half]
+    else:
+        result = [stone * 2024]
+    memo[stone] = result
+    return result
+
+def pebble(stones, n):
     stones = stones.copy()
+    memo = {}
     for _ in range(n):
-        i = 0
-        while i < len(stones):
-            if stones[i] == 0:
-                stones[i] = 1
-                i += 1
-            elif len(str(stones[i])) % 2 == 0:
-                stone_string = str(stones[i])
-                half = len(stone_string) // 2
-                leftHalf = int(stone_string[:half])
-                rightHalf = int(stone_string[half:])
-                stones[i] = leftHalf
-                stones.insert(i + 1, rightHalf)
-                i += 2
-            else:
-                stones[i] *= 2024
-                i += 1
+        new_stones = []
+        for stone in stones:
+            new_stones.extend(transform(stone, memo))
+        stones = new_stones
     return stones
 
-stones = [*map(int, open("input.txt").read().split(" "))]
+# Read input stones
+stones = [*map(int, open("input.txt").read().split())]
+
+# Measure execution time
 start_time = time.time()
-print(f"part 1: {len(blink(stones, 25))}")
-# print(f"part 1: {len(blink(stones, 75))}")
+
+# Part 1
+print(f"part 1: {len(pebble(stones, 25))}")
+
+# Uncomment below for part 2 (it will be resource-intensive)
+print(f"part 2: {len(pebble(stones, 75))}")
+
 print(f"took {time.time() - start_time:.2f}s")
